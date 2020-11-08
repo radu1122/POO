@@ -1,6 +1,7 @@
 package user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class User implements Comparable {
@@ -12,19 +13,26 @@ public class User implements Comparable {
     /**
      * The history of the movies seen
      */
-    private Map<String, Integer> history;
+    private Map<String, Integer> history = new HashMap<String, Integer>();
     /**
      * Movies added to favorites
      */
     private ArrayList<String> favoriteMovies;
 
-    private Map<String, Double> rating;
+    private Map<String, Double> rating = new HashMap<String, Double>();
 
 
     private int ratingCounter = 0;
 
-    public void addFavorite(String movieTitle) {
-        favoriteMovies.add(movieTitle);
+    public int addFavorite(String movieTitle) {
+        if (favoriteMovies.contains(movieTitle)) {
+            return 0;
+        } else if (!history.containsKey(movieTitle)) {
+            return 2;
+        } else {
+            favoriteMovies.add(movieTitle);
+            return 1;
+        }
     }
 
     public int addView(String movieTitle) {

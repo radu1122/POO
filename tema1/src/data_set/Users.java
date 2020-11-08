@@ -4,13 +4,14 @@ import user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Users {
-    private Map<String, User> users;
+    private Map<String, User> users = new HashMap<String, User>();
 
     public void addUser(String username, User user) {
-        users.put(username, user);
+        this.users.put(username, user);
     }
 
     public Map<String, User> getUsers() {
@@ -40,9 +41,10 @@ public class Users {
         return usersFinal;
     }
 
-    public void addFavorite(String username, String movieTitle) {
+    public int addFavorite(String username, String movieTitle) {
         User user = users.get(username);
-        user.addFavorite(movieTitle);
+        return user.addFavorite(movieTitle);
+
     }
 
     public int addView(String username, String movieTitle) {

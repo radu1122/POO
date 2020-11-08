@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -105,14 +106,15 @@ public final class Main {
         }
 
 
-
         List<ActionInputData> commandsData = input.getCommands();
         for (ActionInputData command : commandsData) {
             System.out.println(command);
             int id = command.getActionId();
+            String message = "";
             if (command.getActionType().equals("command")) {
-                String message = commands(command, users, shows);
+                message = commands(command, users, shows);
             }
+            System.out.println(message);
         }
 
 
@@ -131,9 +133,15 @@ public final class Main {
     public static String commandFavorite(ActionInputData command, Users users, Shows shows) {
         String username = command.getUsername();
         String title = command.getTitle();
-        users.addFavorite(username, title);
-        shows.addFavorite(title);
-        return "success -> " + title + " was added as favourite";
+        if (users.addFavorite(username, title) == 1) {
+            shows.addFavorite(title);
+            return "success -> " + title + " was added as favourite";
+        } else if (users.addFavorite(username, title) == 0) {
+            return "error -> " + title + " is already in favourite list";
+        } else {
+            return "error -> " + title + " is not seen";
+        }
+
     }
 
     public static String commandView(ActionInputData command, Users users, Shows shows) {
@@ -153,7 +161,7 @@ public final class Main {
             return "error -> " + title + " is not seen";
         } else {
             shows.addRating(title, grade, season);
-            return "success -> " + title + " was rated with " + String.format("%.1f",grade) + " by " + username;
+            return "success -> " + title + " was rated with " + String.format(Locale.US, "%.1f",grade) + " by " + username;
         }
     }
 }
