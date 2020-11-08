@@ -3,7 +3,7 @@ package user;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class User {
+public class User implements Comparable {
     private String username;
     /**
      * Subscription Type
@@ -18,7 +18,8 @@ public class User {
      */
     private ArrayList<String> favoriteMovies;
 
-    private Map<String, Double> ratings;
+    private Map<String, Double> rating;
+
 
     private int ratingCounter = 0;
 
@@ -26,16 +27,22 @@ public class User {
         favoriteMovies.add(movieTitle);
     }
 
-    public void addView(String movieTitle) {
+    public int addView(String movieTitle) {
         if (history.containsKey(movieTitle) == true) {
             history.put(movieTitle, history.get(movieTitle) + 1);
         } else {
             history.put(movieTitle, 1);
         }
+        return history.get(movieTitle);
     }
 
-    public void addRating() {
-        this.ratingCounter++;
+    public int addRating(String movieTitle, Double value) {
+        if (history.containsKey(movieTitle) == true) {
+            this.ratingCounter++;
+            rating.put(movieTitle, value);
+            return 1;
+        }
+        return 0;
     }
 
     public int getRating() {
@@ -80,5 +87,11 @@ public class User {
         this.subscriptionType = subscriptionType;
         this.history = history;
         this.favoriteMovies = favoriteMovies;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        int compare = ((User)o).getRating();
+        return this.ratingCounter - compare;
     }
 }
