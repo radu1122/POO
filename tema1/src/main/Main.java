@@ -74,9 +74,14 @@ public final class Main {
 
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
-
+        ArrayList<String> listtest = new ArrayList<>();
+        listtest.add("ID");
+        listtest.add("22");
+        listtest.add("test");
+        listtest.add("wqe");
+        JSONArray.toJSONString(listtest);
         //TODO add here the entry point to your implementation
-
+        System.out.println("Lista arr " + arrayResult);
         // add all shows to the dataset
         Shows shows = new Shows();
         // movies

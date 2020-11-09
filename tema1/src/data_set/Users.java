@@ -149,48 +149,63 @@ public class Users {
         }
         ArrayList<String> genres = GenerateGenres();
         Map<String, Video> shows = showsRaw.getShows();
-
-        String bestGenre = "";
-        int mostViews = 0;
-
-        for (String genre : genres) {
-            int views = 0;
-            for (Map.Entry<String, Video> element : shows.entrySet()) {
-                if (element.getValue().getGenres().contains(genre)) {
-                    views = views + element.getValue().getViewCount();
-                }
-            }
-            if (bestGenre.equals("")) {
-                bestGenre = genre;
-                mostViews = views;
-            }
-//            if (views == mostViews) {
-//                if (bestGenre.compareTo(genre) > 0) {
-//                    bestGenre = genre;
-//                    mostViews = views;
-//                }
-//            }
-            if (views > mostViews) {
-                bestGenre = genre;
-                mostViews = views;
-            }
-        }
+        User user = users.get(username);
         String finalTitle = "";
         int maxViews = 0;
-
-        for (Map.Entry<String, Video> element : shows.entrySet()) {
-            if (element.getValue().getGenres().contains(bestGenre)) {
-                if (finalTitle.equals("")) {
-                    finalTitle = element.getValue().getTitle();
-                    maxViews = element.getValue().getViewCount();
+        while (true) {
+            String bestGenre = "";
+            int mostViews = 0;
+            int position = 0;
+            int i = 0;
+            for (String genre : genres) {
+                int views = 0;
+                for (Map.Entry<String, Video> element : shows.entrySet()) {
+                    if (element.getValue().getGenres().contains(genre)) {
+                        views = views + element.getValue().getViewCount();
+                    }
                 }
-                if (maxViews > element.getValue().getViewCount()) {
-                    finalTitle = element.getValue().getTitle();
-                    maxViews = element.getValue().getViewCount();
+                if (bestGenre.equals("")) {
+                    bestGenre = genre;
+                    mostViews = views;
+                    position = i;
+                }
+    //            if (views == mostViews) {
+    //                if (bestGenre.compareTo(genre) > 0) {
+    //                    bestGenre = genre;
+    //                    mostViews = views;
+    //                }
+    //            }
+                if (views > mostViews) {
+                    bestGenre = genre;
+                    mostViews = views;
+                    position = i;
+                }
+                i++;
+            }
+
+            for (Map.Entry<String, Video> element : shows.entrySet()) {
+                if (!user.getHistory().containsKey(element.getValue().getTitle())) {
+                    if (element.getValue().getGenres().contains(bestGenre)) {
+                        if (finalTitle.equals("")) {
+                            finalTitle = element.getValue().getTitle();
+                            maxViews = element.getValue().getViewCount();
+                        }
+                        if (maxViews < element.getValue().getViewCount()) {
+                            finalTitle = element.getValue().getTitle();
+                            maxViews = element.getValue().getViewCount();
+                        }
+                    }
                 }
             }
+            if (finalTitle.equals("")) {
+                genres.remove(position);
+            } else {
+                break;
+            }
+            if (genres.size() == 0) {
+                break;
+            }
         }
-
         if (finalTitle.equals("")) {
             return "x";
         } else {
