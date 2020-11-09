@@ -2,7 +2,7 @@ package video;
 
 import java.util.ArrayList;
 
-public abstract class Video {
+public class Video {
     /**
      * Show's title
      */
@@ -24,11 +24,13 @@ public abstract class Video {
 
     private int viewCount = 0;
 
+    public double getRating() {return 0;};
+
     public void addFavorite() {
         this.favoriteCount++;
     }
     public void addView() {
-        this.favoriteCount++;
+        this.viewCount++;
     }
 
     public Video(final String title, final int year,

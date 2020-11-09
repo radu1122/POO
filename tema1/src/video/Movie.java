@@ -7,11 +7,16 @@ public class Movie extends Video {
 
 
 
+
     private double rating = 0;
     private int ratingCount = 0;
 
     public int getDuration() {
         return duration;
+    }
+
+    public double getRating() {
+        return rating;
     }
 
     public void setRating(double rating) {

@@ -27,4 +27,8 @@ public class Shows {
         Video video = shows.get(title);
         video.addRating(rating, season);
     }
+
+    public double getRating(String title) {
+        return shows.get(title).getRating();
+    }
 }

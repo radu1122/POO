@@ -29,17 +29,18 @@ public class Serial extends Video {
         for (Season season : seasons) {
             this.duration = season.getDuration() + this.duration;
         }
+        this.calculateRating();
     }
 
     @Override
     public void addRating(double rating, int season) {
-        List<Double> ratings = this.seasons.get(season).getRatings();
+        List<Double> ratings = this.seasons.get(season - 1).getRatings();
         ratings.add(rating);
-        this.seasons.get(season).setRatings(ratings);
-        this.calculeRating();
+        this.seasons.get(season - 1).setRatings(ratings);
+        this.calculateRating();
     }
 
-    private void calculeRating() {
+    private void calculateRating() {
         double rating = 0;
         for (Season season : seasons) {
             double seasonRating = 0;
@@ -52,6 +53,10 @@ public class Serial extends Video {
         }
         rating = rating / (double) numberOfSeasons;
         this.rating = rating;
+    }
+    
+    public double getRating() {
+        return rating;
     }
 
     public int getNumberOfSeasons() {

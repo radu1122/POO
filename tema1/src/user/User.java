@@ -45,6 +45,9 @@ public class User implements Comparable {
     }
 
     public int addRating(String movieTitle, Double value) {
+        if (rating.containsKey(movieTitle)) {
+            return 2;
+        }
         if (history.containsKey(movieTitle) == true) {
             this.ratingCounter++;
             rating.put(movieTitle, value);

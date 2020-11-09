@@ -1,8 +1,10 @@
 package main;
 
+import actor.Actor;
 import checker.Checkstyle;
 import checker.Checker;
 import common.Constants;
+import data_set.Actors;
 import data_set.Shows;
 import data_set.Users;
 import entertainment.Season;
@@ -18,10 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implementation.
@@ -105,14 +104,24 @@ public final class Main {
             shows.addShow(serial.getTitle(), serialBuff);
         }
 
+        // actors
+        Actors actors = new Actors();
+        actors.addActors(input.getActors());
 
-        List<ActionInputData> commandsData = input.getCommands();
+
+                List<ActionInputData> commandsData = input.getCommands();
         for (ActionInputData command : commandsData) {
             System.out.println(command);
             int id = command.getActionId();
             String message = "";
-            if (command.getActionType().equals("command")) {
+            String commandType = command.getActionType();
+            if (commandType.equals("command")) {
                 message = commands(command, users, shows);
+            } else if (commandType.equals("query")) {
+                String objectType = command.getObjectType();
+                if (objectType.equals("actors")) {
+                    message = queryActors(command, actors, shows);
+                }
             }
             System.out.println(message);
         }
@@ -133,10 +142,11 @@ public final class Main {
     public static String commandFavorite(ActionInputData command, Users users, Shows shows) {
         String username = command.getUsername();
         String title = command.getTitle();
-        if (users.addFavorite(username, title) == 1) {
+        int output = users.addFavorite(username, title);
+        if (output == 1) {
             shows.addFavorite(title);
             return "success -> " + title + " was added as favourite";
-        } else if (users.addFavorite(username, title) == 0) {
+        } else if (output == 0) {
             return "error -> " + title + " is already in favourite list";
         } else {
             return "error -> " + title + " is not seen";
@@ -157,11 +167,59 @@ public final class Main {
         String title = command.getTitle();
         double grade = command.getGrade();
         int season = command.getSeasonNumber();
-        if (users.addRating(username, title, grade) == 0) {
+        int output = users.addRating(username, title, grade);
+        if (output == 0) {
             return "error -> " + title + " is not seen";
-        } else {
+        } else if (output == 1) {
             shows.addRating(title, grade, season);
             return "success -> " + title + " was rated with " + String.format(Locale.US, "%.1f",grade) + " by " + username;
+        } else {
+            return "error -> " + title + " has been already rated";
+
         }
+    }
+
+    public static String queryActors(ActionInputData command, Actors actors, Shows shows) {
+        return switch (command.getCriteria()) {
+            case "average" -> queryActorsAverage(command, actors, shows);
+            case "awards" -> queryActorAwards(command, actors);
+            case "filter_description" -> queryActorsFilter(command, actors);
+            default -> "";
+        };
+    }
+
+    public static String[] GetStringArray(ArrayList<Actor> arr) {
+
+        // declaration and initialise String Array
+        String str[] = new String[arr.size()];
+
+        // ArrayList to Array Conversion
+        for (int j = 0; j < arr.size(); j++) {
+
+            // Assign each value to String array
+            str[j] = arr.get(j).toString();
+        }
+
+        return str;
+    }
+
+    public static String queryActorsAverage(ActionInputData command, Actors actors, Shows shows) {
+        int number = command.getNumber();
+        actors.computeRating(shows);
+        ArrayList<Actor> averageActors = actors.getAverage(number, command.getSortType());
+
+        return Arrays.toString(GetStringArray(averageActors));
+    }
+
+    public static String queryActorAwards(ActionInputData command, Actors actors) {
+        ArrayList<Actor> awardsActors = actors.getAwards(command.getFilters().get(3), command.getSortType());
+
+        return Arrays.toString(GetStringArray(awardsActors));
+    }
+
+    public static String queryActorsFilter(ActionInputData command, Actors actors) {
+        ArrayList<Actor> filterActors = actors.getFilter(command.getFilters().get(2), command.getSortType());
+
+        return Arrays.toString(GetStringArray(filterActors));
     }
 }
