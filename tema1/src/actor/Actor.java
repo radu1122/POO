@@ -23,7 +23,7 @@ public class Actor {
      */
     private final Map<ActorsAwards, Integer> awards;
 
-    private final int awardsCount;
+    private int awardsCount = 0;
 
     private double rating = 0;
 
@@ -39,7 +39,9 @@ public class Actor {
         this.careerDescription = careerDescription;
         this.filmography = filmography;
         this.awards = awards;
-        this.awardsCount = awards.size();
+        for (Map.Entry<ActorsAwards, Integer> element : this.awards.entrySet()) {
+            this.awardsCount = element.getValue() + this.awardsCount;
+        }
     }
 
     public int getAwardsCount() {

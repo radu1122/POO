@@ -31,8 +31,13 @@ public class Actors {
     }
 
     public ArrayList<Actor> getAverage(int number, String sortType) {
-        ArrayList<Actor> actorsNew;
-        actorsNew = (ArrayList<Actor>) this.actors.clone();
+        ArrayList<Actor> actorsNew = new ArrayList<>();
+
+        for (Actor actor : this.actors) {
+            if (actor.getRating() != 0) {
+                actorsNew.add(actor);
+            }
+        }
 
         Comparator<Actor> compareByRating = (Actor o1, Actor o2) -> {
             if (o1.getRating() == o2.getRating()) {
@@ -51,6 +56,9 @@ public class Actors {
         }
 
         for(int i = 0; i < number; i++) {
+            if (i == actorsNew.size()) {
+                break;
+            }
             actorsFinal.add(actorsNew.get(i));
         }
 
@@ -96,7 +104,11 @@ public class Actors {
         for (Actor actor : actors) {
             boolean isGood = true;
             for (String word : words) {
-                if (!actor.getCareerDescription().contains(word)) {
+                if (actor.getName().equals("Brad Pitt")) {
+                    System.out.println(word);
+                }
+                word = " " + word + " ";
+                if (!actor.getCareerDescription().toLowerCase().contains(word.toLowerCase())) {
                     isGood = false;
                     break;
                 }

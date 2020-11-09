@@ -1,5 +1,6 @@
 package data_set;
 
+import actor.Actor;
 import video.Video;
 
 import java.util.ArrayList;
@@ -63,16 +64,44 @@ public class Shows {
             if (queryType.equals("most_viewed") && video.getViewCount() == 0) {
                 isGood = false;
             }
+
+            if (queryType.equals("favorite") && video.getFavoriteCount() == 0) {
+                isGood = false;
+            }
+
             if (isGood) {
                 shows.add(video);
             }
         }
-        Comparator<Video> comparator = switch (queryType) {
-            case "rating" -> Comparator.comparing(Video::getRating);
-            case "favorite" -> Comparator.comparing(Video::getFavoriteCount);
-            case "most_viewed" -> Comparator.comparing(Video::getViewCount);
-            default -> Comparator.comparing(Video::getDuration);
-        };
+        Comparator<Video> comparator;
+        if (queryType.equals("favorite")) {
+            comparator = (Video o1, Video o2) -> {
+                if (o1.getFavoriteCount() == o2.getFavoriteCount()) {
+                    return o1.getTitle().compareTo(o2.getTitle());
+                } else {
+                    return o1.getFavoriteCount() - o2.getFavoriteCount();
+                }
+            };
+        } else if (queryType.equals("rating")){
+            comparator = (Video o1, Video o2) -> {
+                if (o1.getRating() == o2.getRating()) {
+                    return o1.getTitle().compareTo(o2.getTitle());
+                } else {
+                    return Double.compare(o1.getRating(), o2.getRating());
+                }
+            };
+        } else if (queryType.equals("most_viewed")){
+            comparator = (Video o1, Video o2) -> {
+                if (o1.getViewCount() == o2.getViewCount()) {
+                    return o1.getTitle().compareTo(o2.getTitle());
+                } else {
+                    return o1.getViewCount() - o2.getViewCount();
+                }
+            };
+        } else {
+            comparator = Comparator.comparing(Video::getDuration);
+        }
+
 
         if (sortType.equals("asc")) {
             shows.sort(comparator);

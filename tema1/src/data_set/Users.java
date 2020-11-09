@@ -28,11 +28,20 @@ public class Users {
             }
         }
 
+        Comparator<User> compareByRatingUser = (User o1, User o2) -> {
+            if (o1.getRating() == o2.getRating()) {
+                return o1.getUsername().compareTo(o2.getUsername());
+            } else {
+                return Double.compare(o1.getRating(), o2.getRating());
+            }
+        };
+
         // sort the array
         if (sortType.equals("asc")) {
-            Collections.sort(users);
+            users.sort(compareByRatingUser);
+
         } else {
-            users.sort(Collections.reverseOrder());
+            users.sort(compareByRatingUser.reversed());
         }
 
         ArrayList<User> usersFinal = new ArrayList<>();
@@ -60,17 +69,16 @@ public class Users {
         return user.addRating(movieTitle, value);
     }
 
-    public String recommendationStandard(String username, Shows showsRaw) {
+    public String recommendationStandard(String username, Shows showsRaw, ArrayList<String> showsTitle) {
         if (!users.containsKey(username)) {
             return "x";
         }
         User user = users.get(username);
         Map<String, Video> shows = showsRaw.getShows();
 
-        for (Map.Entry<String, Video> element : shows.entrySet()) {
-            String title = element.getKey();
-            if (!user.getHistory().containsKey(title)) {
-                return title;
+        for (String element : showsTitle) {
+            if (!user.getHistory().containsKey(element)) {
+                return element;
             }
         }
         return "x";
@@ -89,6 +97,9 @@ public class Users {
         for (Map.Entry<String, Video> element : shows.entrySet()) {
             String title = element.getKey();
             double rating = element.getValue().getRating();
+            System.out.println(title + " RATING  titlu " + rating);
+            System.out.println(finalTitle + " RATING  BUN " + maxRating);
+
             if (!user.getHistory().containsKey(title)) {
                 if (finalTitle.equals("")) {
                     finalTitle = title;
@@ -169,12 +180,12 @@ public class Users {
                     mostViews = views;
                     position = i;
                 }
-    //            if (views == mostViews) {
-    //                if (bestGenre.compareTo(genre) > 0) {
-    //                    bestGenre = genre;
-    //                    mostViews = views;
-    //                }
-    //            }
+                if (views == mostViews) {
+                    if (bestGenre.compareTo(genre) > 0) {
+                        bestGenre = genre;
+                        mostViews = views;
+                    }
+                }
                 if (views > mostViews) {
                     bestGenre = genre;
                     mostViews = views;

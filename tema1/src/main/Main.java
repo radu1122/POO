@@ -8,6 +8,7 @@ import data_set.Actors;
 import data_set.Shows;
 import data_set.Users;
 import fileio.*;
+import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import user.User;
 import video.Movie;
@@ -74,22 +75,20 @@ public final class Main {
 
         Writer fileWriter = new Writer(filePath2);
         JSONArray arrayResult = new JSONArray();
-        ArrayList<String> listtest = new ArrayList<>();
-        listtest.add("ID");
-        listtest.add("22");
-        listtest.add("test");
-        listtest.add("wqe");
-        JSONArray.toJSONString(listtest);
+
+
         //TODO add here the entry point to your implementation
-        System.out.println("Lista arr " + arrayResult);
+
         // add all shows to the dataset
         Shows shows = new Shows();
+        ArrayList<String> showsTitle = new ArrayList<>();
         // movies
         for (MovieInputData movie : input.getMovies()) {
             Movie movieBuff = new Movie(movie.getTitle(), movie.getCast(),
                                         movie.getGenres(), movie.getYear(),
                                         movie.getDuration());
             shows.addShow(movie.getTitle(), movieBuff);
+            showsTitle.add(movie.getTitle());
         }
         // serials
         for (SerialInputData serial : input.getSerials()) {
@@ -97,6 +96,8 @@ public final class Main {
                     serial.getGenres(), serial.getNumberSeason(), serial.getSeasons(),
                     serial.getYear());
             shows.addShow(serial.getTitle(), serialBuff);
+            showsTitle.add(serial.getTitle());
+
         }
 
         // add all users to the dataSet
@@ -130,11 +131,17 @@ public final class Main {
                     message = queryVideos(command, shows);
                 }
             } else {
-                message = recommendationUsers(command, users, shows);
+                message = recommendationUsers(command, users, shows, showsTitle);
             }
+            JSONObject jo = new JSONObject();
+            jo.put("id", id);
+            jo.put("message", message);
+
+            arrayResult.add(jo);
             System.out.println(message);
         }
 
+        System.out.println(arrayResult);
 
         fileWriter.closeJSON(arrayResult);
     }
@@ -281,9 +288,9 @@ public final class Main {
 
     }
 
-    public static String recommendationUsers(ActionInputData command, Users users, Shows shows) {
+    public static String recommendationUsers(ActionInputData command, Users users, Shows shows, ArrayList<String> showsTitle) {
         return switch (command.getType()) {
-            case "standard" -> recommendationUsersStandard(command, users, shows);
+            case "standard" -> recommendationUsersStandard(command, users, shows, showsTitle);
             case "best_unseen" -> recommendationUsersBestUnseen(command, users, shows);
             case "popular" -> recommendationPopular(command, users, shows);
             case "favorite" -> recommendationFavorite(command, users, shows);
@@ -291,11 +298,11 @@ public final class Main {
             default -> "";
         };
     }
-    public static String recommendationUsersStandard(ActionInputData command, Users users, Shows shows) {
-        String exportTitle = users.recommendationStandard(command.getUsername(), shows);
+    public static String recommendationUsersStandard(ActionInputData command, Users users, Shows shows, ArrayList<String> showsTitle) {
+        String exportTitle = users.recommendationStandard(command.getUsername(), shows, showsTitle);
 
         if (exportTitle.equals("x")) {
-            return "StandardRecommendation cannot be applied";
+            return "StandardRecommendation cannot be applied!";
         } else {
             return "StandardRecommendation result: " + exportTitle;
         }
@@ -304,7 +311,7 @@ public final class Main {
     public static String recommendationUsersBestUnseen(ActionInputData command, Users users, Shows shows) {
         String exportTitle = users.recommendationBestUnseen(command.getUsername(), shows);
         if (exportTitle.equals("x")) {
-            return "BestRatedUnseenRecommendation cannot be applied";
+            return "BestRatedUnseenRecommendation cannot be applied!";
         } else {
             return "BestRatedUnseenRecommendation result: " + exportTitle;
         }
@@ -313,7 +320,7 @@ public final class Main {
         String exportTitle = users.recommendationPopular(command.getUsername(), shows);
 
         if (exportTitle.equals("x")) {
-            return "PopularRecommendation cannot be applied";
+            return "PopularRecommendation cannot be applied!";
         } else {
             return "PopularRecommendation result: " + exportTitle;
         }
@@ -323,7 +330,7 @@ public final class Main {
         String exportTitle = users.recommendationFavorite(command.getUsername(), shows);
 
         if (exportTitle.equals("x")) {
-            return "FavoriteRecommendation cannot be applied";
+            return "FavoriteRecommendation cannot be applied!";
         } else {
             return "FavoriteRecommendation result: " + exportTitle;
         }
@@ -333,7 +340,7 @@ public final class Main {
         ArrayList<Video> videos = users.recommendationSearch(command.getUsername(),command.getGenre(), shows);
 
         if (videos.size() == 0) {
-            return "SearchRecommendation cannot be applied";
+            return "SearchRecommendation cannot be applied!";
         } else {
             return "SearchRecommendation result: " + Arrays.toString(GetStringArrayVideo(videos));
         }
