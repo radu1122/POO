@@ -105,4 +105,9 @@ public class User implements Comparable {
         int compare = ((User)o).getRating();
         return this.ratingCounter - compare;
     }
+
+    @Override
+    public String toString() {
+        return username;
+    }
 }

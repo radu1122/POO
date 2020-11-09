@@ -11,6 +11,7 @@ public class Movie extends Video {
     private double rating = 0;
     private int ratingCount = 0;
 
+    @Override
     public int getDuration() {
         return duration;
     }
@@ -42,4 +43,7 @@ public class Movie extends Video {
         super(title, year, cast, genres);
         this.duration = duration;
     }
+
+    @Override
+    public final String getMovieType() {return "movies";}
 }

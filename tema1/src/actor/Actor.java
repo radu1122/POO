@@ -71,12 +71,20 @@ public class Actor {
 
     public void calculateRating(Shows shows) {
         double rating = 0;
-        int size = filmography.size();
+        int size = 0;
         for (String movie : filmography) {
-            rating = shows.getRating(movie) + rating;
+            if (shows.getRating(movie) != -1) {
+                if (shows.getRating(movie) != 0) {
+                    rating = shows.getRating(movie) + rating;
+                    size++;
+                }
+            }
+
         }
-        rating = rating / (double) size;
-        this.rating = rating;
+        if (rating != 0) {
+            rating = rating / (double) size;
+            this.rating = rating;
+        }
     }
 
     @Override

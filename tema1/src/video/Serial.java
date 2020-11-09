@@ -9,11 +9,11 @@ public class Serial extends Video {
     /**
      * Number of seasons
      */
-    private int numberOfSeasons;
+    private final int numberOfSeasons;
     /**
      * Season list
      */
-    private ArrayList<Season> seasons;
+    private final ArrayList<Season> seasons;
 
     private int duration = 0;
 
@@ -48,8 +48,11 @@ public class Serial extends Video {
             for (Double ratingBuff : season.getRatings()) {
                 seasonRating = seasonRating + ratingBuff;
             }
-            seasonRating = seasonRating / (double) size;
-            rating = rating + seasonRating;
+            if (seasonRating != 0) {
+                seasonRating = seasonRating / (double) size;
+                rating = rating + seasonRating;
+            }
+
         }
         rating = rating / (double) numberOfSeasons;
         this.rating = rating;
@@ -67,7 +70,12 @@ public class Serial extends Video {
         return seasons;
     }
 
+    @Override
     public int getDuration() {
         return duration;
     }
+
+    @Override
+    public final String getMovieType() {return "shows";}
+
 }

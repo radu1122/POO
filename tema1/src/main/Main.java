@@ -7,14 +7,12 @@ import common.Constants;
 import data_set.Actors;
 import data_set.Shows;
 import data_set.Users;
-import entertainment.Season;
 import fileio.*;
-import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import user.User;
 import video.Movie;
 import video.Serial;
-
+import video.Video;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -121,6 +119,11 @@ public final class Main {
                 String objectType = command.getObjectType();
                 if (objectType.equals("actors")) {
                     message = queryActors(command, actors, shows);
+                } else if (objectType.equals("users")) {
+                    message = queryUsers(command, users);
+                } else {
+                    message = queryVideos(command, shows);
+
                 }
             }
             System.out.println(message);
@@ -188,10 +191,40 @@ public final class Main {
         };
     }
 
-    public static String[] GetStringArray(ArrayList<Actor> arr) {
+    public static String[] GetStringArrayActor(ArrayList<Actor> arr) {
 
         // declaration and initialise String Array
-        String str[] = new String[arr.size()];
+        String[] str = new String[arr.size()];
+
+        // ArrayList to Array Conversion
+        for (int j = 0; j < arr.size(); j++) {
+
+            // Assign each value to String array
+            str[j] = arr.get(j).toString();
+        }
+
+        return str;
+    }
+
+    public static String[] GetStringArrayUser(ArrayList<User> arr) {
+
+        // declaration and initialise String Array
+        String[] str = new String[arr.size()];
+
+        // ArrayList to Array Conversion
+        for (int j = 0; j < arr.size(); j++) {
+
+            // Assign each value to String array
+            str[j] = arr.get(j).toString();
+        }
+
+        return str;
+    }
+
+    public static String[] GetStringArrayVideo(ArrayList<Video> arr) {
+
+        // declaration and initialise String Array
+        String[] str = new String[arr.size()];
 
         // ArrayList to Array Conversion
         for (int j = 0; j < arr.size(); j++) {
@@ -205,21 +238,40 @@ public final class Main {
 
     public static String queryActorsAverage(ActionInputData command, Actors actors, Shows shows) {
         int number = command.getNumber();
+
         actors.computeRating(shows);
         ArrayList<Actor> averageActors = actors.getAverage(number, command.getSortType());
 
-        return Arrays.toString(GetStringArray(averageActors));
+        return "Query result: " + Arrays.toString(GetStringArrayActor(averageActors));
     }
 
     public static String queryActorAwards(ActionInputData command, Actors actors) {
         ArrayList<Actor> awardsActors = actors.getAwards(command.getFilters().get(3), command.getSortType());
 
-        return Arrays.toString(GetStringArray(awardsActors));
+        return "Query result: " + Arrays.toString(GetStringArrayActor(awardsActors));
     }
 
     public static String queryActorsFilter(ActionInputData command, Actors actors) {
         ArrayList<Actor> filterActors = actors.getFilter(command.getFilters().get(2), command.getSortType());
 
-        return Arrays.toString(GetStringArray(filterActors));
+        return "Query result: " + Arrays.toString(GetStringArrayActor(filterActors));
+    }
+
+    public static String queryUsers(ActionInputData command, Users users) {
+        ArrayList<User> ratingUsers = users.getRatingList(command.getNumber(), command.getSortType());
+
+        return "Query result: " + Arrays.toString(GetStringArrayUser(ratingUsers));
+    }
+
+    public static String queryVideos(ActionInputData command, Shows shows) {
+        ArrayList<Video> videos = shows.getListQuery(command.getNumber(),
+                                                          command.getFilters().get(0).get(0),
+                                                          command.getFilters().get(1).get(0),
+                                                          command.getObjectType(),
+                                                          command.getSortType(),
+                                                          command.getCriteria());
+
+        return "Query result: " + Arrays.toString(GetStringArrayVideo(videos));
+
     }
 }

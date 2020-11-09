@@ -1,13 +1,16 @@
 package data_set;
 
+import actor.Actor;
 import user.User;
 import video.Video;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Shows {
-    private Map<String, Video> shows = new HashMap<String, Video>();
+    private final Map<String, Video> shows = new HashMap<String, Video>();
 
     public void addShow(String title, Video video) {
         shows.put(title, video);
@@ -29,6 +32,68 @@ public class Shows {
     }
 
     public double getRating(String title) {
+        if (shows.get(title) == null) {
+            return -1;
+        }
         return shows.get(title).getRating();
     }
+
+    public ArrayList<Video> getListQuery(int n, String year, String genre, String movieType, String sortType, String queryType) {
+        ArrayList<Video> shows = new ArrayList<Video>();
+
+        for (Map.Entry<String, Video> element : this.shows.entrySet()) {
+            boolean isGood = true;
+            Video video = element.getValue();
+
+            if (year != null) {
+                if (!String.valueOf(video.getYear()).equals(year)) {
+                    isGood = false;
+                }
+            }
+            if (genre != null) {
+                if (!video.getGenres().contains(genre)) {
+                    isGood = false;
+                }
+            }
+            if (!movieType.equals(video.getMovieType())) {
+                isGood = false;
+            }
+            if (queryType.equals("most_viewed") && video.getViewCount() == 0) {
+                isGood = false;
+            }
+            if (isGood) {
+                shows.add(video);
+            }
+        }
+        Comparator<Video> comparator = null;
+        if (queryType.equals("rating")) {
+           comparator = Comparator.comparing(Video::getRating);
+        } else if (queryType.equals("favorite")) {
+            comparator = Comparator.comparing(Video::getFavoriteCount);
+        } else if (queryType.equals("most_viewed")) {
+            comparator = Comparator.comparing(Video::getViewCount);
+        } else {
+            comparator = Comparator.comparing(Video::getDuration);
+        }
+
+        if (sortType.equals("asc")) {
+            shows.sort(comparator);
+        } else {
+            assert comparator != null;
+            shows.sort(comparator.reversed());
+        }
+
+        ArrayList<Video> finalShows = new ArrayList<Video>();
+
+        for (int i = 0; i < n; i++) {
+            if (i == shows.size()) {
+                break;
+            }
+            finalShows.add(shows.get(i));
+        }
+
+        return finalShows;
+    }
+
+
 }

@@ -18,13 +18,15 @@ public class Users {
         return this.users;
     }
 
-    public ArrayList<User> numRatings(int n, String sortType) {
+    public ArrayList<User> getRatingList(int n, String sortType) {
         ArrayList<User> users = new ArrayList<User>();
 
         // get all the users into an arrayList
         for (Map.Entry<String, User> mapElement : this.users.entrySet()) {
             User value = mapElement.getValue();
-            users.add(value);
+            if (value.getRating() != 0) {
+                users.add(value);
+            }
         }
 
         // sort the array
@@ -36,6 +38,9 @@ public class Users {
 
         ArrayList<User> usersFinal = new ArrayList<User>();
         for (int i = 0; i < n; i++) {
+            if (i == users.size()) {
+                break;
+            }
             usersFinal.add(users.get(i));
         }
         return usersFinal;

@@ -34,20 +34,24 @@ public class Actors {
     public ArrayList<Actor> getAverage(int number, String sortType) {
         ArrayList<Actor> actorsNew = (ArrayList<Actor>) this.actors.clone();
 
-        Comparator<Actor> compareByRating = Comparator.comparingDouble(Actor::getRating);
-
-        Collections.sort(actorsNew, compareByRating);
-
+        Comparator<Actor> compareByRating = (Actor o1, Actor o2) -> {
+            if (o1.getRating() == o2.getRating()) {
+                return o1.getName().compareTo(o2.getName());
+            } else {
+                return Double.compare(o1.getRating(), o2.getRating());
+            }
+        };
         ArrayList<Actor> actorsFinal = new ArrayList<Actor>();
 
         if (sortType.equals("asc")) {
-            for(int i = 0; i < number; i++) {
-                actorsFinal.add(actorsNew.get(i));
-            }
+            actorsNew.sort(compareByRating);
         } else {
-            for (int i = actorsNew.size() - 1; i > actorsNew.size() - 1 - number; i--) {
-                actorsFinal.add(actorsNew.get(i));
-            }
+            actorsNew.sort(compareByRating.reversed());
+
+        }
+
+        for(int i = 0; i < number; i++) {
+            actorsFinal.add(actorsNew.get(i));
         }
 
         return actorsFinal;
@@ -70,7 +74,18 @@ public class Actors {
             }
         }
 
-        //TODO add sort asc / desc
+        Comparator<Actor> compareByAward = (Actor o1, Actor o2) -> {
+            if (o1.getAwardsCount() == o2.getAwardsCount()) {
+                return o1.getName().compareTo(o2.getName());
+            } else {
+                return o1.getAwardsCount() - o2.getAwardsCount();
+            }
+        };
+        if (sortType.equals("asc")) {
+            actorsFinal.sort(compareByAward);
+        } else {
+            actorsFinal.sort(compareByAward.reversed());
+        }
 
         return actorsFinal;
     }
@@ -91,8 +106,13 @@ public class Actors {
             }
         }
 
-        //TODO add sort asc / desc
+        Comparator<Actor> compareByName = Comparator.comparing(Actor::getName);
 
+        if (sortType.equals("asc")) {
+            actorsFinal.sort(compareByName);
+        } else {
+            actorsFinal.sort(compareByName.reversed());
+        }
         return actorsFinal;
     }
 }

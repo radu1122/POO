@@ -24,6 +24,14 @@ public class Video {
 
     private int viewCount = 0;
 
+    public int getFavoriteCount() {
+        return favoriteCount;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
     public double getRating() {return 0;};
 
     public void addFavorite() {
@@ -59,4 +67,14 @@ public class Video {
         return genres;
     }
 
+    public String getMovieType() {return "";}
+
+    public int getDuration() {
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
