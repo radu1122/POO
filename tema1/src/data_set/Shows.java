@@ -1,7 +1,5 @@
 package data_set;
 
-import actor.Actor;
-import user.User;
 import video.Video;
 
 import java.util.ArrayList;
@@ -10,7 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Shows {
-    private final Map<String, Video> shows = new HashMap<String, Video>();
+    private final Map<String, Video> shows = new HashMap<>();
+
+    public Map<String, Video> getShows() {
+        return shows;
+    }
 
     public void addShow(String title, Video video) {
         shows.put(title, video);
@@ -39,7 +41,7 @@ public class Shows {
     }
 
     public ArrayList<Video> getListQuery(int n, String year, String genre, String movieType, String sortType, String queryType) {
-        ArrayList<Video> shows = new ArrayList<Video>();
+        ArrayList<Video> shows = new ArrayList<>();
 
         for (Map.Entry<String, Video> element : this.shows.entrySet()) {
             boolean isGood = true;
@@ -65,16 +67,12 @@ public class Shows {
                 shows.add(video);
             }
         }
-        Comparator<Video> comparator = null;
-        if (queryType.equals("rating")) {
-           comparator = Comparator.comparing(Video::getRating);
-        } else if (queryType.equals("favorite")) {
-            comparator = Comparator.comparing(Video::getFavoriteCount);
-        } else if (queryType.equals("most_viewed")) {
-            comparator = Comparator.comparing(Video::getViewCount);
-        } else {
-            comparator = Comparator.comparing(Video::getDuration);
-        }
+        Comparator<Video> comparator = switch (queryType) {
+            case "rating" -> Comparator.comparing(Video::getRating);
+            case "favorite" -> Comparator.comparing(Video::getFavoriteCount);
+            case "most_viewed" -> Comparator.comparing(Video::getViewCount);
+            default -> Comparator.comparing(Video::getDuration);
+        };
 
         if (sortType.equals("asc")) {
             shows.sort(comparator);
@@ -83,7 +81,7 @@ public class Shows {
             shows.sort(comparator.reversed());
         }
 
-        ArrayList<Video> finalShows = new ArrayList<Video>();
+        ArrayList<Video> finalShows = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
             if (i == shows.size()) {

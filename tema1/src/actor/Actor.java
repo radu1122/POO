@@ -13,7 +13,7 @@ public class Actor {
     /**
      * description of the actor's career
      */
-    private String careerDescription;
+    private final String careerDescription;
     /**
      * videos starring actor
      */
@@ -21,9 +21,9 @@ public class Actor {
     /**
      * awards won by the actor
      */
-    private Map<ActorsAwards, Integer> awards;
+    private final Map<ActorsAwards, Integer> awards;
 
-    private int awardsCount = 0;
+    private final int awardsCount;
 
     private double rating = 0;
 

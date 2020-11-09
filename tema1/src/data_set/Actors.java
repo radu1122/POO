@@ -6,12 +6,11 @@ import fileio.ActorInputData;
 import utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Actors {
-    private ArrayList<Actor> actors = new  ArrayList<Actor>();
+    private final ArrayList<Actor> actors = new  ArrayList<>();
 
     public Actors(){
 
@@ -32,7 +31,8 @@ public class Actors {
     }
 
     public ArrayList<Actor> getAverage(int number, String sortType) {
-        ArrayList<Actor> actorsNew = (ArrayList<Actor>) this.actors.clone();
+        ArrayList<Actor> actorsNew;
+        actorsNew = (ArrayList<Actor>) this.actors.clone();
 
         Comparator<Actor> compareByRating = (Actor o1, Actor o2) -> {
             if (o1.getRating() == o2.getRating()) {
@@ -41,7 +41,7 @@ public class Actors {
                 return Double.compare(o1.getRating(), o2.getRating());
             }
         };
-        ArrayList<Actor> actorsFinal = new ArrayList<Actor>();
+        ArrayList<Actor> actorsFinal = new ArrayList<>();
 
         if (sortType.equals("asc")) {
             actorsNew.sort(compareByRating);
@@ -58,7 +58,7 @@ public class Actors {
     }
 
     public ArrayList<Actor> getAwards(List<String> awards, String sortType) {
-        ArrayList<Actor> actorsFinal = new ArrayList<Actor>();
+        ArrayList<Actor> actorsFinal = new ArrayList<>();
 
         for (Actor actor : actors) {
             boolean isGood = true;
@@ -91,7 +91,7 @@ public class Actors {
     }
 
     public ArrayList<Actor> getFilter(List<String> words, String sortType) {
-        ArrayList<Actor> actorsFinal = new ArrayList<Actor>();
+        ArrayList<Actor> actorsFinal = new ArrayList<>();
 
         for (Actor actor : actors) {
             boolean isGood = true;

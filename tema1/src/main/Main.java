@@ -77,14 +77,6 @@ public final class Main {
 
         //TODO add here the entry point to your implementation
 
-        // add all users to the dataSet
-        Users users = new Users();
-        for (UserInputData user : input.getUsers()) {
-            User userBuff = new User(user.getUsername(), user.getSubscriptionType(),
-                    user.getHistory(), user.getFavoriteMovies());
-            users.addUser(user.getUsername(), userBuff);
-        }
-
         // add all shows to the dataset
         Shows shows = new Shows();
         // movies
@@ -102,16 +94,24 @@ public final class Main {
             shows.addShow(serial.getTitle(), serialBuff);
         }
 
+        // add all users to the dataSet
+        Users users = new Users();
+        for (UserInputData user : input.getUsers()) {
+            User userBuff = new User(user.getUsername(), user.getSubscriptionType(),
+                    user.getHistory(), user.getFavoriteMovies(), shows);
+            users.addUser(user.getUsername(), userBuff);
+        }
+
         // actors
         Actors actors = new Actors();
         actors.addActors(input.getActors());
 
 
-                List<ActionInputData> commandsData = input.getCommands();
+        List<ActionInputData> commandsData = input.getCommands();
         for (ActionInputData command : commandsData) {
             System.out.println(command);
             int id = command.getActionId();
-            String message = "";
+            String message;
             String commandType = command.getActionType();
             if (commandType.equals("command")) {
                 message = commands(command, users, shows);
@@ -123,8 +123,9 @@ public final class Main {
                     message = queryUsers(command, users);
                 } else {
                     message = queryVideos(command, shows);
-
                 }
+            } else {
+                message = recommendationUsers(command, users, shows);
             }
             System.out.println(message);
         }
@@ -273,5 +274,63 @@ public final class Main {
 
         return "Query result: " + Arrays.toString(GetStringArrayVideo(videos));
 
+    }
+
+    public static String recommendationUsers(ActionInputData command, Users users, Shows shows) {
+        return switch (command.getType()) {
+            case "standard" -> recommendationUsersStandard(command, users, shows);
+            case "best_unseen" -> recommendationUsersBestUnseen(command, users, shows);
+            case "popular" -> recommendationPopular(command, users, shows);
+            case "favorite" -> recommendationFavorite(command, users, shows);
+            case "search" -> recommendationSearch(command, users, shows);
+            default -> "";
+        };
+    }
+    public static String recommendationUsersStandard(ActionInputData command, Users users, Shows shows) {
+        String exportTitle = users.recommendationStandard(command.getUsername(), shows);
+
+        if (exportTitle.equals("x")) {
+            return "StandardRecommendation cannot be applied";
+        } else {
+            return "StandardRecommendation result: " + exportTitle;
+        }
+    }
+
+    public static String recommendationUsersBestUnseen(ActionInputData command, Users users, Shows shows) {
+        String exportTitle = users.recommendationBestUnseen(command.getUsername(), shows);
+        if (exportTitle.equals("x")) {
+            return "BestRatedUnseenRecommendation cannot be applied";
+        } else {
+            return "BestRatedUnseenRecommendation result: " + exportTitle;
+        }
+    }
+    public static String recommendationPopular(ActionInputData command, Users users, Shows shows) {
+        String exportTitle = users.recommendationPopular(command.getUsername(), shows);
+
+        if (exportTitle.equals("x")) {
+            return "PopularRecommendation cannot be applied";
+        } else {
+            return "PopularRecommendation result: " + exportTitle;
+        }
+    }
+
+    public static String recommendationFavorite(ActionInputData command, Users users, Shows shows) {
+        String exportTitle = users.recommendationFavorite(command.getUsername(), shows);
+
+        if (exportTitle.equals("x")) {
+            return "FavoriteRecommendation cannot be applied";
+        } else {
+            return "FavoriteRecommendation result: " + exportTitle;
+        }
+    }
+
+    public static String recommendationSearch(ActionInputData command, Users users, Shows shows) {
+        ArrayList<Video> videos = users.recommendationSearch(command.getUsername(),command.getGenre(), shows);
+
+        if (videos.size() == 0) {
+            return "SearchRecommendation cannot be applied";
+        } else {
+            return "SearchRecommendation result: " + Arrays.toString(GetStringArrayVideo(videos));
+        }
     }
 }

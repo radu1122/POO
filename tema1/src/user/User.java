@@ -1,5 +1,9 @@
 package user;
 
+import data_set.Shows;
+import org.jetbrains.annotations.NotNull;
+import video.Video;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +17,13 @@ public class User implements Comparable {
     /**
      * The history of the movies seen
      */
-    private Map<String, Integer> history = new HashMap<String, Integer>();
+    private Map<String, Integer> history;
     /**
      * Movies added to favorites
      */
     private ArrayList<String> favoriteMovies;
 
-    private Map<String, Double> rating = new HashMap<String, Double>();
+    private final Map<String, Double> rating = new HashMap<>();
 
 
     private int ratingCounter = 0;
@@ -36,7 +40,7 @@ public class User implements Comparable {
     }
 
     public int addView(String movieTitle) {
-        if (history.containsKey(movieTitle) == true) {
+        if (history.containsKey(movieTitle)) {
             history.put(movieTitle, history.get(movieTitle) + 1);
         } else {
             history.put(movieTitle, 1);
@@ -48,7 +52,7 @@ public class User implements Comparable {
         if (rating.containsKey(movieTitle)) {
             return 2;
         }
-        if (history.containsKey(movieTitle) == true) {
+        if (history.containsKey(movieTitle)) {
             this.ratingCounter++;
             rating.put(movieTitle, value);
             return 1;
@@ -93,15 +97,23 @@ public class User implements Comparable {
     }
 
     public User(String username, String subscriptionType,
-                Map<String, Integer> history, ArrayList<String> favoriteMovies) {
+                Map<String, Integer> history, ArrayList<String> favoriteMovies, Shows showsRaw) {
         this.username = username;
         this.subscriptionType = subscriptionType;
         this.history = history;
         this.favoriteMovies = favoriteMovies;
+
+        Map<String, Video> shows = showsRaw.getShows();
+        for (Map.Entry<String, Integer> element : history.entrySet()) {
+            shows.get(element.getKey()).addMoreViews(element.getValue());
+        }
+        for (String element : favoriteMovies) {
+            shows.get(element).addFavorite();
+        }
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(@NotNull Object o) {
         int compare = ((User)o).getRating();
         return this.ratingCounter - compare;
     }

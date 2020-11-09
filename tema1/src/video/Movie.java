@@ -3,7 +3,7 @@ package video;
 import java.util.ArrayList;
 
 public class Movie extends Video {
-    private int duration;
+    private final int duration;
 
 
 

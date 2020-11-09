@@ -6,19 +6,19 @@ public class Video {
     /**
      * Show's title
      */
-    private String title;
+    private final String title;
     /**
      * The year the show was released
      */
-    private int year;
+    private final int year;
     /**
      * Show casting
      */
-    private ArrayList<String> cast;
+    private final ArrayList<String> cast;
     /**
      * Show genres
      */
-    private ArrayList<String> genres;
+    private final ArrayList<String> genres;
 
     private int favoriteCount = 0;
 
@@ -32,11 +32,15 @@ public class Video {
         return viewCount;
     }
 
-    public double getRating() {return 0;};
+    public double getRating() {return 0;}
 
     public void addFavorite() {
         this.favoriteCount++;
     }
+    public void addMoreViews(int x) {
+        this.viewCount = this.viewCount + x;
+    }
+
     public void addView() {
         this.viewCount++;
     }
@@ -49,7 +53,8 @@ public class Video {
         this.genres = genres;
     }
 
-    public void addRating(double rating, int season)  { return; }
+    public void addRating(double rating, int season)  {
+    }
 
     public final String getTitle() {
         return title;
