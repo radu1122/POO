@@ -119,11 +119,15 @@ public class Actors {
     for (Actor actor : actors) {
       boolean isGood = true;
       for (String word : words) {
-        if (actor.getName().equals("Brad Pitt")) {
-          System.out.println(word);
-        }
-        word = " " + word + " ";
-        if (!actor.getCareerDescription().toLowerCase().contains(word.toLowerCase())) {
+        String wordX = " " + word + " ";
+        String replaceString = actor.getCareerDescription().toLowerCase().replace(","," ");
+        replaceString = replaceString.replace("\n"," ");
+        replaceString = replaceString.replace("."," ");
+        replaceString = replaceString.replace("-"," ");
+
+        replaceString = " " + replaceString;
+        System.out.println(replaceString);
+        if (!replaceString.toLowerCase().contains(wordX.toLowerCase())) {
           isGood = false;
           break;
         }

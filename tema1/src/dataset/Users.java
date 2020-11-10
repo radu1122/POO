@@ -238,6 +238,13 @@ public final class Users {
               finalTitle = element.getValue().getTitle();
               maxViews = element.getValue().getViewCount();
             }
+            if (maxViews == element.getValue().getViewCount()) {
+              if (finalTitle.compareTo(element.getValue().getTitle()) > 0) {
+                finalTitle = element.getValue().getTitle();
+                maxViews = element.getValue().getViewCount();
+              }
+
+            }
           }
         }
       }

@@ -93,34 +93,30 @@ public final class Shows {
         shows.add(video);
       }
     }
-    Comparator<Video> comparator;
-    if (queryType.equals("favorite")) {
-      comparator = (Video o1, Video o2) -> {
+    Comparator<Video> comparator = switch (queryType) {
+      case "favorite" -> (Video o1, Video o2) -> {
         if (o1.getFavoriteCount() == o2.getFavoriteCount()) {
           return o1.getTitle().compareTo(o2.getTitle());
         } else {
           return o1.getFavoriteCount() - o2.getFavoriteCount();
         }
       };
-    } else if (queryType.equals("rating")) {
-      comparator = (Video o1, Video o2) -> {
+      case "ratings" -> (Video o1, Video o2) -> {
         if (o1.getRating() == o2.getRating()) {
           return o1.getTitle().compareTo(o2.getTitle());
         } else {
           return Double.compare(o1.getRating(), o2.getRating());
         }
       };
-    } else if (queryType.equals("most_viewed")) {
-      comparator = (Video o1, Video o2) -> {
+      case "most_viewed" -> (Video o1, Video o2) -> {
         if (o1.getViewCount() == o2.getViewCount()) {
           return o1.getTitle().compareTo(o2.getTitle());
         } else {
           return o1.getViewCount() - o2.getViewCount();
         }
       };
-    } else {
-      comparator = Comparator.comparing(Video::getDuration);
-    }
+      default -> Comparator.comparing(Video::getDuration);
+    };
 
 
     if (sortType.equals("asc")) {

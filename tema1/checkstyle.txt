@@ -1,10 +1,14 @@
 Starting audit...
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\actor\Actor.java:82:12: 'rating' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Actors.java:22:52: 'actors' hides a field. [HiddenField]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Actors.java:123:86: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Actors.java:124:51: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Actors.java:125:50: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Actors.java:126:50: ',' is not followed by whitespace. [WhitespaceAfter]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Shows.java:65:22: 'shows' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Users.java:31:21: 'users' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\video\Movie.java:25:38: 'rating' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\video\Serial.java:36:38: 'rating' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\video\Serial.java:44:12: 'rating' hides a field. [HiddenField]
 Audit done.
-Checkstyle ends with 7 errors.
+Checkstyle ends with 11 errors.
