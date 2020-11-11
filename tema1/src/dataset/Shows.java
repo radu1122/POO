@@ -115,14 +115,19 @@ public final class Shows {
           return o1.getViewCount() - o2.getViewCount();
         }
       };
-      default -> Comparator.comparing(Video::getDuration);
+      default -> (Video o1, Video o2) ->  {
+        if (o1.getDuration() == o2.getDuration()) {
+          return o1.getTitle().compareTo(o2.getTitle());
+        } else {
+          return o1.getDuration() - o2.getDuration();
+        }
+      };
     };
 
 
     if (sortType.equals("asc")) {
       shows.sort(comparator);
     } else {
-      assert comparator != null;
       shows.sort(comparator.reversed());
     }
 

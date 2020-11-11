@@ -211,7 +211,7 @@ public final class Main {
     String title = command.getTitle();
     double grade = command.getGrade();
     int season = command.getSeasonNumber();
-    int output = users.addRating(username, title, grade);
+    int output = users.addRating(username, title, grade, season);
     if (output == 0) {
       return "error -> " + title + " is not seen";
     } else if (output == 1) {
@@ -356,10 +356,10 @@ public final class Main {
                                            final Shows shows, final ArrayList<String> showsTitle) {
     return switch (command.getType()) {
       case "standard" -> recommendationUsersStandard(command, users, shows, showsTitle);
-      case "best_unseen" -> recommendationUsersBestUnseen(command, users, shows);
-      case "popular" -> recommendationPopular(command, users, shows);
-      case "favorite" -> recommendationFavorite(command, users, shows);
-      case "search" -> recommendationSearch(command, users, shows);
+      case "best_unseen" -> recommendationUsersBestUnseen(command, users, shows, showsTitle);
+      case "popular" -> recommendationPopular(command, users, shows, showsTitle);
+      case "favorite" -> recommendationFavorite(command, users, shows, showsTitle);
+      case "search" -> recommendationSearch(command, users, shows, showsTitle);
       default -> "";
     };
   }
@@ -384,8 +384,9 @@ public final class Main {
    * functia care face trigger recomandarea best unseen.
    */
   public static String recommendationUsersBestUnseen(final ActionInputData command,
-                                                     final Users users, final Shows shows) {
-    String exportTitle = users.recommendationBestUnseen(command.getUsername(), shows);
+                                                     final Users users, final Shows shows,
+                                                     final ArrayList<String> showsTitle) {
+    String exportTitle = users.recommendationBestUnseen(command.getUsername(), shows, showsTitle);
     if (exportTitle.equals("x")) {
       return "BestRatedUnseenRecommendation cannot be applied!";
     } else {
@@ -397,8 +398,9 @@ public final class Main {
    * functia care face trigger recomandarea popular.
    */
   public static String recommendationPopular(final ActionInputData command,
-                                             final Users users, final Shows shows) {
-    String exportTitle = users.recommendationPopular(command.getUsername(), shows);
+                                             final Users users, final Shows shows,
+                                             final ArrayList<String> showsTitle) {
+    String exportTitle = users.recommendationPopular(command.getUsername(), shows, showsTitle);
 
     if (exportTitle.equals("x")) {
       return "PopularRecommendation cannot be applied!";
@@ -411,8 +413,9 @@ public final class Main {
    * functia care face trigger recomandarea favorite.
    */
   public static String recommendationFavorite(final ActionInputData command,
-                                              final Users users, final Shows shows) {
-    String exportTitle = users.recommendationFavorite(command.getUsername(), shows);
+                                              final Users users, final Shows shows,
+                                              final ArrayList<String> showsTitle) {
+    String exportTitle = users.recommendationFavorite(command.getUsername(), shows, showsTitle);
 
     if (exportTitle.equals("x")) {
       return "FavoriteRecommendation cannot be applied!";
@@ -425,7 +428,8 @@ public final class Main {
    * functia care face trigger recomandarea search.
    */
   public static String recommendationSearch(final ActionInputData command,
-                                            final Users users, final Shows shows) {
+                                            final Users users, final Shows shows,
+                                            final ArrayList<String> showsTitle) {
     ArrayList<Video> videos = users.recommendationSearch(command.getUsername(),
                                                          command.getGenre(), shows);
 

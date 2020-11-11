@@ -84,9 +84,9 @@ public final class Users {
   /**
    * trigger la add rating video.
    */
-  public int addRating(final String username, final String movieTitle, final Double value) {
+  public int addRating(final String username, final String movieTitle, final Double value, int season) {
     User user = users.get(username);
-    return user.addRating(movieTitle, value);
+    return user.addRating(movieTitle, value, season);
   }
 
   /**
@@ -111,7 +111,8 @@ public final class Users {
   /**
    * returneaza titlul recomandare best unseen.
    */
-  public String recommendationBestUnseen(final String username, final Shows showsRaw) {
+  public String recommendationBestUnseen(final String username, final Shows showsRaw,
+                                         final ArrayList<String> showsTitle) {
     if (!users.containsKey(username)) {
       return "x";
     }
@@ -120,10 +121,9 @@ public final class Users {
 
     String finalTitle = "";
     double maxRating = 0;
-
-    for (Map.Entry<String, Video> element : shows.entrySet()) {
-      String title = element.getKey();
-      double rating = element.getValue().getRating();
+    for (String element : showsTitle) {
+      String title = element;
+      double rating = shows.get(element).getRating();
       System.out.println(title + " RATING  titlu " + rating);
       System.out.println(finalTitle + " RATING  BUN " + maxRating);
 
@@ -135,12 +135,6 @@ public final class Users {
         if (Double.compare(rating, maxRating) > 0) {
           finalTitle = title;
           maxRating = rating;
-        }
-        if (Double.compare(rating, maxRating) == 0) {
-          if (finalTitle.compareTo(title) > 0) {
-            finalTitle = title;
-            maxRating = rating;
-          }
         }
       }
 
@@ -184,7 +178,8 @@ public final class Users {
   /**
    * returneaza titlul recomandare popular.
    */
-  public String recommendationPopular(final String username, final Shows showsRaw) {
+  public String recommendationPopular(final String username, final Shows showsRaw,
+                                      final ArrayList<String> showsTitle) {
     if (!users.containsKey(username)) {
       return "x";
     }
@@ -203,7 +198,7 @@ public final class Users {
       int i = 0;
       for (String genre : genres) {
         int views = 0;
-        for (Map.Entry<String, Video> element : shows.entrySet()) {
+          for (Map.Entry<String, Video> element : shows.entrySet()) {
           if (element.getValue().getGenres().contains(genre)) {
             views = views + element.getValue().getViewCount();
           }
@@ -226,25 +221,28 @@ public final class Users {
         }
         i++;
       }
+      System.out.println(bestGenre);
+      for (String element : showsTitle) {
+        Video show = shows.get(element);
+        System.out.println("Actual MAX " + finalTitle + " --" + maxViews);
+        System.out.println("CURENT ELEMENT " + element + " --" + show.getViewCount());
 
-      for (Map.Entry<String, Video> element : shows.entrySet()) {
-        if (!user.getHistory().containsKey(element.getValue().getTitle())) {
-          if (element.getValue().getGenres().contains(bestGenre)) {
+        if (!user.getHistory().containsKey(element)) {
+          if (show.getGenres().contains(bestGenre)) {
             if (finalTitle.equals("")) {
-              finalTitle = element.getValue().getTitle();
-              maxViews = element.getValue().getViewCount();
+              finalTitle = element;
+              maxViews = show.getViewCount();
             }
-            if (maxViews < element.getValue().getViewCount()) {
-              finalTitle = element.getValue().getTitle();
-              maxViews = element.getValue().getViewCount();
+            if (maxViews < show.getViewCount()) {
+              finalTitle = element;
+              maxViews = show.getViewCount();
             }
-            if (maxViews == element.getValue().getViewCount()) {
-              if (finalTitle.compareTo(element.getValue().getTitle()) > 0) {
-                finalTitle = element.getValue().getTitle();
-                maxViews = element.getValue().getViewCount();
-              }
-
-            }
+//            if (maxViews == show.getViewCount()) {
+//              if (finalTitle.compareTo(element) > 0) {
+//                finalTitle = element;
+//                maxViews = show.getViewCount();
+//              }
+//            }
           }
         }
       }
@@ -268,7 +266,8 @@ public final class Users {
   /**
    * returneaza titlul recomandare favorite.
    */
-  public String recommendationFavorite(final String username, final Shows showsRaw) {
+  public String recommendationFavorite(final String username, final Shows showsRaw,
+                                       final ArrayList<String> showsTitle) {
     if (!users.containsKey(username)) {
       return "x";
     }
@@ -281,24 +280,23 @@ public final class Users {
     String finalTitle = "";
     int maxFav = 0;
 
-    for (Map.Entry<String, Video> element : shows.entrySet()) {
-      String title = element.getKey();
-      int fav = element.getValue().getFavoriteCount();
-      if (!user.getHistory().containsKey(title)) {
+    for (String element : showsTitle) {
+      int fav = shows.get(element).getFavoriteCount();
+      if (!user.getHistory().containsKey(element)) {
         if (finalTitle.equals("")) {
-          finalTitle = title;
+          finalTitle = element;
           maxFav = fav;
         }
         if (fav > maxFav) {
-          finalTitle = title;
+          finalTitle = element;
           maxFav = fav;
         }
-        if (fav == maxFav) {
-          if (finalTitle.compareTo(title) > 0) {
-            finalTitle = title;
-            maxFav = fav;
-          }
-        }
+//        if (fav == maxFav) {
+//          if (finalTitle.compareTo(element) > 0) {
+//            finalTitle = element;
+//            maxFav = fav;
+//          }
+//        }
       }
     }
     if (finalTitle.equals("")) {

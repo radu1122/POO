@@ -57,13 +57,14 @@ public final class User implements Comparable {
   /**
    * adauga rating show.
    */
-  public int addRating(final String movieTitle, final Double value) {
-    if (rating.containsKey(movieTitle)) {
+  public int addRating(final String movieTitle, final Double value, int season) {
+    String ratingTitle = movieTitle + season;
+    if (rating.containsKey(ratingTitle)) {
       return 2;
     }
     if (history.containsKey(movieTitle)) {
       this.ratingCounter++;
-      rating.put(movieTitle, value);
+      rating.put(ratingTitle, value);
       return 1;
     }
     return 0;

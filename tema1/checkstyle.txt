@@ -7,8 +7,11 @@ Starting audit...
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Actors.java:126:50: ',' is not followed by whitespace. [WhitespaceAfter]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Shows.java:65:22: 'shows' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Users.java:31:21: 'users' hides a field. [HiddenField]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Users.java:87: Line is longer than 100 characters (found 104). [LineLength]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\dataset\Users.java:87:92: Parameter season should be final. [FinalParameters]
+[ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\user\User.java:60:69: Parameter season should be final. [FinalParameters]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\video\Movie.java:25:38: 'rating' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\video\Serial.java:36:38: 'rating' hides a field. [HiddenField]
 [ERROR] D:\Facultate\POO\Teme\POO\tema1\.\src\video\Serial.java:44:12: 'rating' hides a field. [HiddenField]
 Audit done.
-Checkstyle ends with 11 errors.
+Checkstyle ends with 14 errors.
