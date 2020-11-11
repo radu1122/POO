@@ -127,7 +127,6 @@ public final class Main {
 
     List<ActionInputData> commandsData = input.getCommands();
     for (ActionInputData command : commandsData) {
-      System.out.println(command);
       int id = command.getActionId();
       String message;
       String commandType = command.getActionType();
@@ -150,10 +149,7 @@ public final class Main {
       jo.put("message", message);
 
       arrayResult.add(jo);
-      System.out.println(message);
     }
-
-    System.out.println(arrayResult);
 
     fileWriter.closeJSON(arrayResult);
   }

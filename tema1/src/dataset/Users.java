@@ -122,18 +122,15 @@ public final class Users {
     String finalTitle = "";
     double maxRating = 0;
     for (String element : showsTitle) {
-      String title = element;
       double rating = shows.get(element).getRating();
-      System.out.println(title + " RATING  titlu " + rating);
-      System.out.println(finalTitle + " RATING  BUN " + maxRating);
 
-      if (!user.getHistory().containsKey(title)) {
+      if (!user.getHistory().containsKey(element)) {
         if (finalTitle.equals("")) {
-          finalTitle = title;
+          finalTitle = element;
           maxRating = rating;
         }
         if (Double.compare(rating, maxRating) > 0) {
-          finalTitle = title;
+          finalTitle = element;
           maxRating = rating;
         }
       }
@@ -221,28 +218,14 @@ public final class Users {
         }
         i++;
       }
-      System.out.println(bestGenre);
       for (String element : showsTitle) {
         Video show = shows.get(element);
-        System.out.println("Actual MAX " + finalTitle + " --" + maxViews);
-        System.out.println("CURENT ELEMENT " + element + " --" + show.getViewCount());
 
         if (!user.getHistory().containsKey(element)) {
           if (show.getGenres().contains(bestGenre)) {
-            if (finalTitle.equals("")) {
-              finalTitle = element;
-              maxViews = show.getViewCount();
-            }
-            if (maxViews < show.getViewCount()) {
-              finalTitle = element;
-              maxViews = show.getViewCount();
-            }
-//            if (maxViews == show.getViewCount()) {
-//              if (finalTitle.compareTo(element) > 0) {
-//                finalTitle = element;
-//                maxViews = show.getViewCount();
-//              }
-//            }
+            finalTitle = element;
+            maxViews = show.getViewCount();
+            break;
           }
         }
       }

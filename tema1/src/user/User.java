@@ -1,7 +1,6 @@
 package user;
 
 import dataset.Shows;
-import org.jetbrains.annotations.NotNull;
 import video.Video;
 
 import java.util.ArrayList;
@@ -124,7 +123,7 @@ public final class User implements Comparable {
   }
 
   @Override
-  public int compareTo(final @NotNull Object o) {
+  public int compareTo(final Object o) {
     int compare = ((User) o).getRating();
     return this.ratingCounter - compare;
   }

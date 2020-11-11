@@ -126,7 +126,6 @@ public class Actors {
         replaceString = replaceString.replace("-"," ");
 
         replaceString = " " + replaceString;
-        System.out.println(replaceString);
         if (!replaceString.toLowerCase().contains(wordX.toLowerCase())) {
           isGood = false;
           break;
