@@ -10,7 +10,7 @@ public class Consumer {
     private boolean hasContract = false;
     private int distributorId;
     private int contractPrice = 0;
-    private int remainedContractMonths = 0;
+    private int remainedContractMonths = -1;
     private int distributorProfit = 0;
 
     public Consumer(int id, int budget, int monthlyIncome) {
@@ -29,7 +29,7 @@ public class Consumer {
         Distributors.getInstance().getDistributors().get(distributorId).setNumberOfClients(x - 1);
         distributorId = 0;
         contractPrice = 0;
-        remainedContractMonths = 0;
+        remainedContractMonths = -1;
         lastInvoice = 0;
         currInvoice = 0;
         hasContract = false;
@@ -42,10 +42,13 @@ public class Consumer {
     }
 
     public void generateBill() {
-        this.currInvoice = contractPrice;
-        remainedContractMonths--;
-        Contract contract = Distributors.getInstance().getDistributors().get(distributorId).getContracts().get(id);
-        contract.setRemainedContractMonths(remainedContractMonths);
+        if (!isBankrupt) {
+            this.currInvoice = contractPrice;
+            remainedContractMonths--;
+            Contract contract = Distributors.getInstance().getDistributors().get(distributorId).getContracts().get(id);
+            contract.setRemainedContractMonths(remainedContractMonths);
+        }
+
     }
 
     public void payBills() {
@@ -56,17 +59,15 @@ public class Consumer {
                 this.declareBankruptcy();
             } else {
                 budget = budget - bill;
-                Distributors.getInstance().getDistributors().get(distributorId).receivePayment(bill, id);
-                lastInvoice = 0;
-                currInvoice = 0;
+                Distributors.getInstance().getDistributors().get(distributorId).
+                        receivePayment(bill);
             }
         } else {
-            if (budget - currInvoice < 0) {
+            if (budget - currInvoice <= 0) {
                 lastInvoice = currInvoice;
             } else {
                 budget = budget - currInvoice;
-                Distributors.getInstance().getDistributors().get(distributorId).receivePayment(currInvoice, id);
-
+                Distributors.getInstance().getDistributors().get(distributorId).receivePayment(currInvoice);
             }
             currInvoice = 0;
         }
@@ -166,5 +167,14 @@ public class Consumer {
 
     public void setHasContract(boolean hasContract) {
         this.hasContract = hasContract;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"isBankrupt\":" + isBankrupt +
+                ", \"budget\":" + budget +
+                '}';
     }
 }

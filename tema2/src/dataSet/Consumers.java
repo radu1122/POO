@@ -31,7 +31,9 @@ public class Consumers {
 
     public void payBills() {
         for (Consumer consumer : consumers) {
-            consumer.payBills();
+            if (!consumer.isBankrupt()) {
+                consumer.payBills();
+            }
         }
     }
 
@@ -48,5 +50,10 @@ public class Consumers {
             singleInstance = new Consumers();
 
         return singleInstance;
+    }
+
+    @Override
+    public String toString() {
+        return "" + consumers;
     }
 }

@@ -1,6 +1,8 @@
 package dataSet;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Distributor {
     private int id;
@@ -13,7 +15,8 @@ public class Distributor {
     private int profit;
     private int numberOfClients = 0;
     private int finalProductionCost;
-    private final HashMap<Integer, Contract> contracts = new HashMap<>();
+    private final LinkedHashMap<Integer, Contract> contracts = new LinkedHashMap<>();
+    private final ArrayList<Contract> contractsToExport = new ArrayList<>();
 
 
     public Distributor(int id, int contractLength, int budget, int infrastructureCost, int productionCost) {
@@ -38,7 +41,7 @@ public class Distributor {
     }
 
     public void addContract(int customerId) {
-        numberOfClients++;
+        this.numberOfClients++;
         contracts.put(customerId, new Contract(customerId, this.contractCost, this.contractLength));
         Consumer consumer = Consumers.getInstance().getConsumers().get(customerId);
         consumer.setHasContract(true);
@@ -46,6 +49,7 @@ public class Distributor {
         consumer.setRemainedContractMonths(this.contractLength);
         consumer.setDistributorId(this.id);
         consumer.setDistributorProfit(this.profit);
+        computePrices();
     }
 
     public void clientBankrupt(int clientId) {
@@ -55,7 +59,7 @@ public class Distributor {
 
     public void declareBankruptcy() {
         this.isBankrupt = true;
-        for (HashMap.Entry<Integer, Contract> entry : contracts.entrySet()) {
+        for (Map.Entry<Integer, Contract> entry : contracts.entrySet()) {
             Integer key = entry.getKey();
             Consumers.getInstance().getConsumers().get(key).distributorBankrupt();
         }
@@ -66,27 +70,29 @@ public class Distributor {
     public void payBills() {
         if (this.budget - this.infrastructureCost - this.finalProductionCost < 0) {
             this.declareBankruptcy();
-        } else {
-            this.budget = this.budget - this.infrastructureCost - this.finalProductionCost;
         }
+        System.out.println("infra cost" + infrastructureCost);
+        System.out.println("prod cost" + finalProductionCost);
+        this.budget = this.budget - this.infrastructureCost - this.finalProductionCost;
     }
 
-    public void receivePayment(int invoice, int clientId) {
+    public void receivePayment(int invoice) {
+        System.out.println("factura" + invoice);
         this.budget = this.budget + invoice;
     }
 
     public void computePrices() {
         this.finalProductionCost = this.productionCost * this.numberOfClients;
-        this.profit = (int) Math.round(Math.floor(0.2 * this.finalProductionCost));
+        this.profit = (int) Math.round(Math.floor(0.2 * this.productionCost));
         if (this.numberOfClients == 0) {
-            this.contractCost = infrastructureCost + this.finalProductionCost + this.profit;
+            this.contractCost = infrastructureCost + this.productionCost + this.profit;
         } else {
             this.contractCost = (int) Math.round(Math.floor((double)this.infrastructureCost / (double)this.numberOfClients) +
-                    this.finalProductionCost + this.profit);
+                    this.productionCost + this.profit);
         }
     }
 
-    public HashMap<Integer, Contract> getContracts() {
+    public LinkedHashMap<Integer, Contract> getContracts() {
         return contracts;
     }
 
@@ -168,5 +174,21 @@ public class Distributor {
 
     public void setBankrupt(boolean bankrupt) {
         isBankrupt = bankrupt;
+    }
+
+    public void exportContracts(){
+        for (Map.Entry<Integer, Contract> entry : contracts.entrySet()) {
+            contractsToExport.add(entry.getValue());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"budget\":" + budget +
+                ", \"isBankrupt\":" + isBankrupt +
+                ", \"contracts\":" + contractsToExport +
+                '}';
     }
 }

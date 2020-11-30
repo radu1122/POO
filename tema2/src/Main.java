@@ -42,11 +42,7 @@ public class Main {
                         newConsumer.getMonthlyIncome()));
             }
 
-            // update distributors cost
-            for (CostChange distributor : currentRound.getCostsChanges()) {
-                distributors.updateCosts(distributor.getId(), distributor.getInfrastructureCost(),
-                        distributor.getProductionCost());
-            }
+
 
             distributors.computePrices();
 
@@ -55,8 +51,21 @@ public class Main {
             consumers.generateBills();
 
             consumers.payBills();
+
+            distributors.payBills();
+            // update distributors cost
+            for (CostChange distributor : currentRound.getCostsChanges()) {
+                distributors.updateCosts(distributor.getId(), distributor.getInfrastructureCost(),
+                        distributor.getProductionCost());
+            }
+
+            System.out.println("{\"consumers\":" + consumers + "," +
+                    "\"distributors\":" + distributors + "}");
         }
 
-        System.out.println(inputData);
+        distributors.prepareExport();
+        System.out.println("{\"consumers\":" + consumers + "," +
+                "\"distributors\":" + distributors + "}");
+//        System.out.println(inputData);
     }
 }

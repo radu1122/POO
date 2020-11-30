@@ -34,4 +34,13 @@ public class Contract {
     public void setRemainedContractMonths(int remainedContractMonths) {
         this.remainedContractMonths = remainedContractMonths;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\"consumerId\":" + consumerId +
+                ", \"price\":" + price +
+                ", \"remainedContractMonths\":" + remainedContractMonths +
+                '}';
+    }
 }

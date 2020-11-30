@@ -33,10 +33,15 @@ public class Distributors {
             if (cost < minCost) {
                 minCost = cost;
                 id = distributor.getId();
-
             }
         }
         this.distributorMinId = id;
+    }
+
+    public void payBills() {
+        for (Distributor distributor : distributors) {
+            distributor.payBills();
+        }
     }
 
     public int getDistributorMinId() {
@@ -52,5 +57,16 @@ public class Distributors {
             singleInstance = new Distributors();
 
         return singleInstance;
+    }
+
+    public void prepareExport() {
+        for (Distributor distributor : distributors) {
+            distributor.exportContracts();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "" + distributors;
     }
 }
