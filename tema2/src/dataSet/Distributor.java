@@ -34,13 +34,8 @@ public class Distributor {
         this.computePrices();
     }
 
-    public void costChange(int infrastructureCost, int productionCost) {
-        this.infrastructureCost = infrastructureCost;
-        this.productionCost = productionCost;
-        this.computePrices();
-    }
-
     public void addContract(int customerId) {
+        System.out.println("in add contract nr clienti" + contractCost);
         this.numberOfClients++;
         contracts.put(customerId, new Contract(customerId, this.contractCost, this.contractLength));
         Consumer consumer = Consumers.getInstance().getConsumers().get(customerId);
@@ -49,7 +44,6 @@ public class Distributor {
         consumer.setRemainedContractMonths(this.contractLength);
         consumer.setDistributorId(this.id);
         consumer.setDistributorProfit(this.profit);
-        computePrices();
     }
 
     public void clientBankrupt(int clientId) {
@@ -60,7 +54,7 @@ public class Distributor {
     public void declareBankruptcy() {
         this.isBankrupt = true;
         for (Map.Entry<Integer, Contract> entry : contracts.entrySet()) {
-            Integer key = entry.getKey();
+            int key = entry.getKey();
             Consumers.getInstance().getConsumers().get(key).distributorBankrupt();
         }
         contracts.clear();
@@ -68,6 +62,7 @@ public class Distributor {
     }
 
     public void payBills() {
+        computePrices();
         if (this.budget - this.infrastructureCost - this.finalProductionCost < 0) {
             this.declareBankruptcy();
         }
@@ -82,10 +77,14 @@ public class Distributor {
     }
 
     public void computePrices() {
+        System.out.println("nr clienti" + numberOfClients);
+        System.out.println("compPrices infra = " + infrastructureCost);
+        System.out.println("compPrice prod cost = " + productionCost);
         this.finalProductionCost = this.productionCost * this.numberOfClients;
         this.profit = (int) Math.round(Math.floor(0.2 * this.productionCost));
         if (this.numberOfClients == 0) {
             this.contractCost = infrastructureCost + this.productionCost + this.profit;
+            System.out.println("pret FINAL "+ contractCost);
         } else {
             this.contractCost = (int) Math.round(Math.floor((double)this.infrastructureCost / (double)this.numberOfClients) +
                     this.productionCost + this.profit);
@@ -188,7 +187,7 @@ public class Distributor {
                 "\"id\":" + id +
                 ", \"budget\":" + budget +
                 ", \"isBankrupt\":" + isBankrupt +
-                ", \"contracts\":" + contractsToExport +
+                ", \"contracts\":" + contracts +
                 '}';
     }
 }

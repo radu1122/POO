@@ -11,16 +11,27 @@ public class Consumers {
         return consumers;
     }
 
-    public void makeContracts() {
+    public void checkContracts() {
         for (Consumer consumer : consumers) {
-            if (consumer.getRemainedContractMonths() == 0) {
-                consumer.resetContract();
-            }
-            if (!consumer.getHasContract()) {
-                int distributorId = Distributors.getInstance().getDistributorMinId();
-                Distributors.getInstance().getDistributors().get(distributorId).addContract(consumer.getId());
+            if (consumer.getRemainedContractMonths() == 0 && consumer.getHasContract()) {
+                if (!consumer.isBankrupt()) {
+                    consumer.resetContract();
+                }
             }
         }
+    }
+
+    public void makeContracts() {
+        System.out.println("start make ocntracts");
+        for (Consumer consumer : consumers) {
+            if (!consumer.getHasContract()) {
+                if (!consumer.isBankrupt()) {
+                    int distributorId = Distributors.getInstance().getDistributorMinId();
+                    Distributors.getInstance().getDistributors().get(distributorId).addContract(consumer.getId());
+                }
+            }
+        }
+        System.out.println("finish make contracts");
     }
 
     public void generateBills() {

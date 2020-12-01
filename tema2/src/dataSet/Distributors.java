@@ -25,8 +25,9 @@ public class Distributors {
     }
 
     public void computePrices() {
+        System.out.println("incep comp prices");
         int id = 0;
-        int minCost = 0;
+        int minCost = 32000;
         for (Distributor distributor : distributors) {
             distributor.computePrices();
             int cost =  distributor.getContractCost();
@@ -36,11 +37,14 @@ public class Distributors {
             }
         }
         this.distributorMinId = id;
+        System.out.println("termin comp rpices");
     }
 
     public void payBills() {
         for (Distributor distributor : distributors) {
-            distributor.payBills();
+            if (!distributor.isBankrupt()) {
+                distributor.payBills();
+            }
         }
     }
 
