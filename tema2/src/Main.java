@@ -34,9 +34,9 @@ public class Main {
                     distributor.getInitialProductionCost()));
         }
 
-        consumers.checkContracts();
-
         distributors.computePrices();
+
+        consumers.checkContracts();
 
         consumers.makeContracts();
 
@@ -62,9 +62,9 @@ public class Main {
                         distributor.getProductionCost());
             }
 
-            consumers.checkContracts();
-
             distributors.computePrices();
+
+            consumers.checkContracts();
 
             consumers.makeContracts();
 

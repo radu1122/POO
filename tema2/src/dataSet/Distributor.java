@@ -88,6 +88,7 @@ public class Distributor {
         } else {
             this.contractCost = (int) Math.round(Math.floor((double)this.infrastructureCost / (double)this.numberOfClients) +
                     this.productionCost + this.profit);
+            System.out.println("pret FINAL "+ contractCost);
         }
     }
 
