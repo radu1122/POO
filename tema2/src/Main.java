@@ -6,6 +6,9 @@ import dataSet.Distributors;
 import input.*;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -42,12 +45,10 @@ public class Main {
 
         consumers.generateBills();
 
-        distributors.payBills();
-
         consumers.payBills();
 
-        System.out.println("{\"consumers\":" + consumers + "," +
-                "\"distributors\":" + distributors + "}");
+        distributors.payBills();
+
         // iterate rounds
         for (MonthlyUpdateInput currentRound : inputData.getMonthlyUpdates()) {
             // add new consumers
@@ -70,17 +71,27 @@ public class Main {
 
             consumers.generateBills();
 
-            distributors.payBills();
-
             consumers.payBills();
 
-            System.out.println("{\"consumers\":" + consumers + "," +
-                    "\"distributors\":" + distributors + "}");
+            distributors.payBills();
+
+//            System.out.println("{\"consumers\":" + consumers + "," +
+//                    "\"distributors\":" + distributors + "}");
         }
 
         distributors.prepareExport();
         System.out.println("{\"consumers\":" + consumers + "," +
                 "\"distributors\":" + distributors + "}");
-//        System.out.println(inputData);
+
+        PrintWriter writer = new PrintWriter(outputFile, StandardCharsets.UTF_8);
+        writer.println("{\"consumers\":" + consumers + "," +
+                "\"distributors\":" + distributors + "}");
+        writer.close();
+        resetSingleton();
+    }
+
+    public static void resetSingleton() {
+        Distributors.getInstance().getDistributors().clear();
+        Consumers.getInstance().getConsumers().clear();
     }
 }

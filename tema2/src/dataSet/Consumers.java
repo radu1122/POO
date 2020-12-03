@@ -22,7 +22,6 @@ public class Consumers {
     }
 
     public void makeContracts() {
-        System.out.println("start make ocntracts");
         for (Consumer consumer : consumers) {
             if (!consumer.getHasContract()) {
                 if (!consumer.isBankrupt()) {
@@ -31,12 +30,14 @@ public class Consumers {
                 }
             }
         }
-        System.out.println("finish make contracts");
     }
 
     public void generateBills() {
         for (Consumer consumer : consumers) {
             consumer.generateBill();
+        }
+        for (Distributor distributor : Distributors.getInstance().getDistributors()) {
+            distributor.setMonthlyClients();
         }
     }
 

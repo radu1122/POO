@@ -15,6 +15,7 @@ public class Distributor {
     private int profit;
     private int numberOfClients = 0;
     private int finalProductionCost;
+    private int monthlyClients = 0;
     private final LinkedHashMap<Integer, Contract> contracts = new LinkedHashMap<>();
     private final ArrayList<Contract> contractsToExport = new ArrayList<>();
 
@@ -35,7 +36,7 @@ public class Distributor {
     }
 
     public void addContract(int customerId) {
-        System.out.println("in add contract nr clienti" + contractCost);
+
         this.numberOfClients++;
         contracts.put(customerId, new Contract(customerId, this.contractCost, this.contractLength));
         Consumer consumer = Consumers.getInstance().getConsumers().get(customerId);
@@ -62,34 +63,31 @@ public class Distributor {
     }
 
     public void payBills() {
-        computePrices();
+        computePricesBills();
         if (this.budget - this.infrastructureCost - this.finalProductionCost < 0) {
             this.declareBankruptcy();
         }
-        System.out.println("infra cost" + infrastructureCost);
-        System.out.println("prod cost" + finalProductionCost);
         this.budget = this.budget - this.infrastructureCost - this.finalProductionCost;
+        monthlyClients = 0;
     }
 
     public void receivePayment(int invoice) {
-        System.out.println("factura" + invoice);
         this.budget = this.budget + invoice;
     }
 
     public void computePrices() {
-        System.out.println("nr clienti" + numberOfClients);
-        System.out.println("compPrices infra = " + infrastructureCost);
-        System.out.println("compPrice prod cost = " + productionCost);
         this.finalProductionCost = this.productionCost * this.numberOfClients;
         this.profit = (int) Math.round(Math.floor(0.2 * this.productionCost));
         if (this.numberOfClients == 0) {
             this.contractCost = infrastructureCost + this.productionCost + this.profit;
-            System.out.println("pret FINAL "+ contractCost);
         } else {
             this.contractCost = (int) Math.round(Math.floor((double)this.infrastructureCost / (double)this.numberOfClients) +
                     this.productionCost + this.profit);
-            System.out.println("pret FINAL "+ contractCost);
         }
+    }
+
+    public void computePricesBills() {
+        this.finalProductionCost = this.productionCost * this.monthlyClients;
     }
 
     public LinkedHashMap<Integer, Contract> getContracts() {
@@ -112,12 +110,20 @@ public class Distributor {
         this.profit = profit;
     }
 
-    public int getNumberOfClients() {
-        return numberOfClients;
+    public int getMonthlyClients() {
+        return monthlyClients;
+    }
+
+    public void setMonthlyClients() {
+        this.monthlyClients = numberOfClients;
     }
 
     public void setNumberOfClients(int numberOfClients) {
         this.numberOfClients = numberOfClients;
+    }
+
+    public int getNumberOfClients() {
+        return this.numberOfClients;
     }
 
     public int getFinalProductionCost() {
@@ -188,7 +194,7 @@ public class Distributor {
                 "\"id\":" + id +
                 ", \"budget\":" + budget +
                 ", \"isBankrupt\":" + isBankrupt +
-                ", \"contracts\":" + contracts +
+                ", \"contracts\":" + contractsToExport +
                 '}';
     }
 }
