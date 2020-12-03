@@ -35,7 +35,6 @@ public class Consumer {
         distributorId = 0;
         contractPrice = 0;
         remainedContractMonths = -1;
-        lastInvoice = 0;
         currInvoice = 0;
         hasContract = false;
         distributorProfit = 0;
@@ -58,6 +57,8 @@ public class Consumer {
 
     public void payBills() {
         this.budget = this.budget + monthlyIncome;
+//        System.out.printf("id "+ getId() + " factura curenta " + currInvoice);
+//        System.out.printf("id "+ getId() + " factura veche " + lastInvoice);
         if (lastInvoice != 0) {
             int bill = (int) (Math.round(Math.floor(1.2 * lastInvoice)) + currInvoice);
             if (budget - bill < 0) {
@@ -69,7 +70,7 @@ public class Consumer {
                 Distributors.getInstance().getDistributors().get(distributorId).receivePayment(currInvoice);
             }
         } else {
-            if (budget - currInvoice <= 0) {
+            if (budget - currInvoice < 0) {
                 lastInvoice = currInvoice;
                 distributorIdLastInvoice = distributorId;
             } else {
