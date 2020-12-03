@@ -28,11 +28,13 @@ public class Distributors {
         int id = 0;
         int minCost = 32000;
         for (Distributor distributor : distributors) {
-            distributor.computePrices();
-            int cost =  distributor.getContractCost();
-            if (cost < minCost) {
-                minCost = cost;
-                id = distributor.getId();
+            if (!distributor.isBankrupt()) {
+                distributor.computePrices();
+                int cost =  distributor.getContractCost();
+                if (cost < minCost) {
+                    minCost = cost;
+                    id = distributor.getId();
+                }
             }
         }
         this.distributorMinId = id;

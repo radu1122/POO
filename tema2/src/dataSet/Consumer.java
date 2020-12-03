@@ -57,17 +57,27 @@ public class Consumer {
 
     public void payBills() {
         this.budget = this.budget + monthlyIncome;
-//        System.out.printf("id "+ getId() + " factura curenta " + currInvoice);
-//        System.out.printf("id "+ getId() + " factura veche " + lastInvoice);
+        if (id == 1) {
+//            System.out.println("id "+ getId() + " factura veche " + lastInvoice + " -- " + distributorIdLastInvoice);
+//            System.out.println("id "+ getId() + " factura curenta " + currInvoice+ " -- " + distributorId);
+        }
         if (lastInvoice != 0) {
             int bill = (int) (Math.round(Math.floor(1.2 * lastInvoice)) + currInvoice);
+            if (Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).isBankrupt()) {
+                bill = currInvoice;
+            }
             if (budget - bill < 0) {
                 this.declareBankruptcy();
             } else {
                 budget = budget - bill;
-                Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).
-                        receivePayment((int) (Math.round(Math.floor(1.2 * lastInvoice))));
+                if (Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).isBankrupt()) {
+                    Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).
+                            receivePayment((int) (Math.round(Math.floor(1.2 * lastInvoice))));
+                }
                 Distributors.getInstance().getDistributors().get(distributorId).receivePayment(currInvoice);
+                currInvoice = 0;
+                lastInvoice = 0;
+                distributorIdLastInvoice = 0;
             }
         } else {
             if (budget - currInvoice < 0) {
