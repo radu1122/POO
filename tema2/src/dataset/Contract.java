@@ -1,11 +1,11 @@
-package dataSet;
+package dataset;
 
-public class Contract {
+public final class Contract {
     private int consumerId;
     private int price;
     private int remainedContractMonths;
 
-    public Contract(int consumerId, int price, int remainedContractMonths) {
+    public Contract(final int consumerId, final int price, final int remainedContractMonths) {
         this.consumerId = consumerId;
         this.price = price;
         this.remainedContractMonths = remainedContractMonths;
@@ -15,7 +15,7 @@ public class Contract {
         return consumerId;
     }
 
-    public void setConsumerId(int consumerId) {
+    public void setConsumerId(final int consumerId) {
         this.consumerId = consumerId;
     }
 
@@ -23,7 +23,7 @@ public class Contract {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(final int price) {
         this.price = price;
     }
 
@@ -31,16 +31,17 @@ public class Contract {
         return remainedContractMonths;
     }
 
-    public void setRemainedContractMonths(int remainedContractMonths) {
+    public void setRemainedContractMonths(final int remainedContractMonths) {
         this.remainedContractMonths = remainedContractMonths;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "\"consumerId\":" + consumerId +
-                ", \"price\":" + price +
-                ", \"remainedContractMonths\":" + remainedContractMonths +
-                '}';
+        return "{"
+                + "\"consumerId\":" + consumerId
+                + ", \"price\":" + price
+                + ", \"remainedContractMonths\":"
+                + remainedContractMonths
+                + '}';
     }
 }

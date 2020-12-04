@@ -1,22 +1,31 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dataSet.Consumer;
-import dataSet.Consumers;
-import dataSet.Distributor;
-import dataSet.Distributors;
-import input.*;
+import dataset.Consumer;
+import dataset.Consumers;
+import dataset.Distributors;
+import dataset.Entity;
+import dataset.EntityFactory;
+import input.ConsumerInput;
+import input.CostChange;
+import input.DistributorInput;
+import input.InputData;
+import input.MonthlyUpdateInput;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-public class Main {
+public final class Main {
 
-    public static void main(String[] args) throws Exception {
+    private Main() {
+    }
+
+    /**
+     * MAIN
+     *
+     */
+    public static void main(final String[] args) throws Exception {
         String inputFile = args[0];
         String outputFile = args[1];
-
-        System.out.println(inputFile);
-        System.out.println(outputFile);
 
         ObjectMapper objectMapper = new ObjectMapper();
         InputData inputData = objectMapper.readValue(new File(inputFile), InputData.class);
@@ -26,14 +35,20 @@ public class Main {
 
         // add initial consumers to the dataSet consumers
         for (ConsumerInput consumer : inputData.getInitialData().getConsumers()) {
-            consumers.addConsumer(new Consumer(consumer.getId(), consumer.getInitialBudget(),
+            Entity entity = EntityFactory.getEntity("CONSUMER");
+            consumers.addConsumer((Consumer) entity.
+                    populateEntity(consumer.getId(), consumer.getInitialBudget(),
                     consumer.getMonthlyIncome()));
         }
 
         // add initial distributors to the dataSet distributors
         for (DistributorInput distributor : inputData.getInitialData().getDistributors()) {
-            distributors.addDistributor(new Distributor(distributor.getId(), distributor.getContractLength(),
-                    distributor.getInitialBudget(), distributor.getInitialInfrastructureCost(),
+            Entity entity = EntityFactory.getEntity("DISTRIBUTOR");
+
+            distributors.addDistributor(entity.populateEntity(distributor.getId(),
+                    distributor.getContractLength(),
+                    distributor.getInitialBudget(),
+                    distributor.getInitialInfrastructureCost(),
                     distributor.getInitialProductionCost()));
         }
 
@@ -52,8 +67,10 @@ public class Main {
         // iterate rounds
         for (MonthlyUpdateInput currentRound : inputData.getMonthlyUpdates()) {
             // add new consumers
-            for(ConsumerInput newConsumer : currentRound.getNewConsumers()) {
-                consumers.addConsumer(new Consumer(newConsumer.getId(), newConsumer.getInitialBudget(),
+            for (ConsumerInput newConsumer : currentRound.getNewConsumers()) {
+                Entity entity = EntityFactory.getEntity("CONSUMER");
+                consumers.addConsumer((Consumer) entity.populateEntity(newConsumer.getId(),
+                        newConsumer.getInitialBudget(),
                         newConsumer.getMonthlyIncome()));
             }
 
@@ -79,22 +96,21 @@ public class Main {
 
             distributors.payBills();
 
-//            System.out.println(
-////                    "{\"consumers\":" + consumers + "," +
-//                    "\"distributors\":" + distributors + "}");
         }
 
         distributors.prepareExport();
-        System.out.println("{\"consumers\":" + consumers + "," +
-                "\"distributors\":" + distributors + "}");
 
         PrintWriter writer = new PrintWriter(outputFile, StandardCharsets.UTF_8);
-        writer.println("{\"consumers\":" + consumers + "," +
-                "\"distributors\":" + distributors + "}");
+        writer.println("{\"consumers\":" + consumers + ","
+                + "\"distributors\":" + distributors + "}");
         writer.close();
         resetSingleton();
     }
 
+    /**
+     * reset all DataSets
+     *
+     */
     public static void resetSingleton() {
         Distributors.getInstance().getDistributors().clear();
         Consumers.getInstance().getConsumers().clear();

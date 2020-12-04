@@ -2,7 +2,7 @@ package input;
 
 import java.util.List;
 
-public class InitialDataInput {
+public final class InitialDataInput {
     private List<ConsumerInput> consumers;
     private List<DistributorInput> distributors;
 
@@ -10,7 +10,7 @@ public class InitialDataInput {
         return consumers;
     }
 
-    public void setConsumers(List<ConsumerInput> consumers) {
+    public void setConsumers(final List<ConsumerInput> consumers) {
         this.consumers = consumers;
     }
 
@@ -18,15 +18,15 @@ public class InitialDataInput {
         return distributors;
     }
 
-    public void setDistributors(List<DistributorInput> distributors) {
+    public void setDistributors(final List<DistributorInput> distributors) {
         this.distributors = distributors;
     }
 
     @Override
     public String toString() {
-        return "InitialDataInput{" +
-                "consumers=" + consumers +
-                ", distributors=" + distributors +
-                '}';
+        return "InitialDataInput{"
+                + "consumers=" + consumers
+                + ", distributors=" + distributors
+                + '}';
     }
 }

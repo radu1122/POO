@@ -1,6 +1,6 @@
-package dataSet;
+package dataset;
 
-public class Consumer {
+public final class Consumer extends Entity {
     private int id;
     private int budget;
     private int monthlyIncome;
@@ -14,23 +14,45 @@ public class Consumer {
     private int remainedContractMonths = -1;
     private int distributorProfit = 0;
 
-    public Consumer(int id, int budget, int monthlyIncome) {
-        this.id = id;
-        this.budget = budget;
-        this.monthlyIncome = monthlyIncome;
+    public Consumer() {
+
     }
 
+    /**
+     * populate the class
+     *
+     */
+    public Consumer populateEntity(final int idX, final int budgetX, final int monthlyIncomeX) {
+        this.id = idX;
+        this.budget = budgetX;
+        this.monthlyIncome = monthlyIncomeX;
+        return this;
+    }
+
+    /**
+     * trigger the reset contract on distributor bankrupt
+     *
+     */
     public void distributorBankrupt() {
         this.resetContractData();
     }
 
+    /**
+     * trigger reset all the contracts fields and delete it from distributor
+     *
+     */
     public void resetContract() {
         Distributors.getInstance().getDistributors().get(distributorId).getContracts().remove(id);
-        int x = Distributors.getInstance().getDistributors().get(distributorId).getNumberOfClients();
+        int x = Distributors.getInstance().getDistributors().get(distributorId).
+                getNumberOfClients();
         Distributors.getInstance().getDistributors().get(distributorId).setNumberOfClients(x - 1);
         this.resetContractData();
     }
 
+    /**
+     * reset all the contracts fields
+     *
+     */
     public void resetContractData() {
         distributorId = 0;
         contractPrice = 0;
@@ -40,39 +62,54 @@ public class Consumer {
         distributorProfit = 0;
     }
 
+    /**
+     * bankruptcy trigger
+     *
+     */
     public void declareBankruptcy() {
         isBankrupt = true;
         Distributors.getInstance().getDistributors().get(this.distributorId).clientBankrupt(id);
     }
 
+    /**
+     * generate montly bill
+     *
+     */
     public void generateBill() {
         if (!isBankrupt) {
             this.currInvoice = contractPrice;
             remainedContractMonths--;
-            Contract contract = Distributors.getInstance().getDistributors().get(distributorId).getContracts().get(id);
+            Contract contract = Distributors.getInstance().getDistributors().
+                    get(distributorId).getContracts().get(id);
             contract.setRemainedContractMonths(remainedContractMonths);
         }
 
     }
 
+    /**
+     * pay monthly bills and add montly income to the budget
+     *
+     */
     public void payBills() {
         this.budget = this.budget + monthlyIncome;
-//        System.out.println("id "+ getId() + " factura veche " + lastInvoice + " -- " + distributorIdLastInvoice);
-//        System.out.println("id "+ getId() + " factura curenta " + currInvoice+ " -- " + distributorId);
+        double indices = 1.2;
         if (lastInvoice != 0) {
-            int bill = (int) (Math.round(Math.floor(1.2 * lastInvoice)) + currInvoice);
-            if (Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).isBankrupt()) {
+            int bill = (int) (Math.round(Math.floor(indices * lastInvoice)) + currInvoice);
+            if (Distributors.getInstance().getDistributors().
+                    get(distributorIdLastInvoice).isBankrupt()) {
                 bill = currInvoice;
             }
             if (budget - bill < 0) {
                 this.declareBankruptcy();
             } else {
                 budget = budget - bill;
-                if (Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).isBankrupt()) {
+                if (Distributors.getInstance().getDistributors().
+                        get(distributorIdLastInvoice).isBankrupt()) {
                     Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).
-                            receivePayment((int) (Math.round(Math.floor(1.2 * lastInvoice))));
+                            receivePayment((int) (Math.round(Math.floor(indices * lastInvoice))));
                 }
-                Distributors.getInstance().getDistributors().get(distributorId).receivePayment(currInvoice);
+                Distributors.getInstance().getDistributors().
+                        get(distributorId).receivePayment(currInvoice);
                 currInvoice = 0;
                 lastInvoice = 0;
                 distributorIdLastInvoice = 0;
@@ -83,7 +120,8 @@ public class Consumer {
                 distributorIdLastInvoice = distributorId;
             } else {
                 budget = budget - currInvoice;
-                Distributors.getInstance().getDistributors().get(distributorId).receivePayment(currInvoice);
+                Distributors.getInstance().getDistributors().
+                        get(distributorId).receivePayment(currInvoice);
             }
             currInvoice = 0;
         }
@@ -93,7 +131,7 @@ public class Consumer {
         return distributorProfit;
     }
 
-    public void setDistributorProfit(int distributorProfit) {
+    public void setDistributorProfit(final int distributorProfit) {
         this.distributorProfit = distributorProfit;
     }
 
@@ -101,7 +139,7 @@ public class Consumer {
         return remainedContractMonths;
     }
 
-    public void setRemainedContractMonths(int remainedContractMonths) {
+    public void setRemainedContractMonths(final int remainedContractMonths) {
         this.remainedContractMonths = remainedContractMonths;
     }
 
@@ -109,7 +147,7 @@ public class Consumer {
         return contractPrice;
     }
 
-    public void setContractPrice(int contractPrice) {
+    public void setContractPrice(final int contractPrice) {
         this.contractPrice = contractPrice;
     }
 
@@ -117,7 +155,7 @@ public class Consumer {
         return budget;
     }
 
-    public void setBudget(int budget) {
+    public void setBudget(final int budget) {
         this.budget = budget;
     }
 
@@ -125,7 +163,7 @@ public class Consumer {
         return distributorId;
     }
 
-    public void setDistributorId(int distributorId) {
+    public void setDistributorId(final int distributorId) {
         this.distributorId = distributorId;
     }
 
@@ -133,7 +171,7 @@ public class Consumer {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -141,7 +179,7 @@ public class Consumer {
         return budget;
     }
 
-    public void setInitialBudget(int initialBudget) {
+    public void setInitialBudget(final int initialBudget) {
         this.budget = initialBudget;
     }
 
@@ -149,7 +187,7 @@ public class Consumer {
         return monthlyIncome;
     }
 
-    public void setMonthlyIncome(int monthlyIncome) {
+    public void setMonthlyIncome(final int monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
     }
 
@@ -157,7 +195,7 @@ public class Consumer {
         return isBankrupt;
     }
 
-    public void setBankrupt(boolean bankrupt) {
+    public void setBankrupt(final boolean bankrupt) {
         isBankrupt = bankrupt;
     }
 
@@ -165,7 +203,7 @@ public class Consumer {
         return currInvoice;
     }
 
-    public void setCurrInvoice(int currInvoice) {
+    public void setCurrInvoice(final int currInvoice) {
         this.currInvoice = currInvoice;
     }
 
@@ -173,7 +211,7 @@ public class Consumer {
         return lastInvoice;
     }
 
-    public void setLastInvoice(int lastInvoice) {
+    public void setLastInvoice(final int lastInvoice) {
         this.lastInvoice = lastInvoice;
     }
 
@@ -181,16 +219,16 @@ public class Consumer {
         return hasContract;
     }
 
-    public void setHasContract(boolean hasContract) {
+    public void setHasContract(final boolean hasContract) {
         this.hasContract = hasContract;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                "\"id\":" + id +
-                ", \"isBankrupt\":" + isBankrupt +
-                ", \"budget\":" + budget +
-                '}';
+        return "{"
+                + "\"id\":" + id
+                + ", \"isBankrupt\":" + isBankrupt
+                + ", \"budget\":" + budget
+                + '}';
     }
 }

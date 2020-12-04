@@ -2,7 +2,7 @@ package input;
 
 import java.util.List;
 
-public class InputData {
+public final class InputData {
     private int numberOfTurns;
     private InitialDataInput initialData;
     private List<MonthlyUpdateInput> monthlyUpdates;
@@ -11,7 +11,7 @@ public class InputData {
         return numberOfTurns;
     }
 
-    public void setNumberOfTurns(int numberOfTurns) {
+    public void setNumberOfTurns(final int numberOfTurns) {
         this.numberOfTurns = numberOfTurns;
     }
 
@@ -19,7 +19,7 @@ public class InputData {
         return initialData;
     }
 
-    public void setInitialData(InitialDataInput initialData) {
+    public void setInitialData(final InitialDataInput initialData) {
         this.initialData = initialData;
     }
 
@@ -27,16 +27,16 @@ public class InputData {
         return monthlyUpdates;
     }
 
-    public void setMonthlyUpdates(List<MonthlyUpdateInput> monthlyUpdates) {
+    public void setMonthlyUpdates(final List<MonthlyUpdateInput> monthlyUpdates) {
         this.monthlyUpdates = monthlyUpdates;
     }
 
     @Override
     public String toString() {
-        return "InputData{" +
-                "numberOfTurns=" + numberOfTurns +
-                ", initialData=" + initialData +
-                ", monthlyUpdates=" + monthlyUpdates +
-                '}';
+        return "InputData{"
+                + "numberOfTurns=" + numberOfTurns
+                + ", initialData=" + initialData
+                + ", monthlyUpdates=" + monthlyUpdates
+                + '}';
     }
 }

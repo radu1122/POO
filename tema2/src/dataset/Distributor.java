@@ -1,10 +1,10 @@
-package dataSet;
+package dataset;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Distributor {
+public final class Distributor extends Entity {
     private int id;
     private int contractLength;
     private int budget;
@@ -19,24 +19,40 @@ public class Distributor {
     private final LinkedHashMap<Integer, Contract> contracts = new LinkedHashMap<>();
     private final ArrayList<Contract> contractsToExport = new ArrayList<>();
 
+    public Distributor() {
 
-    public Distributor(int id, int contractLength, int budget, int infrastructureCost, int productionCost) {
-        this.id = id;
-        this.contractLength = contractLength;
-        this.budget = budget;
-        this.infrastructureCost = infrastructureCost;
-        this.productionCost = productionCost;
+    }
+
+    /**
+     * populate the class
+     *
+     */
+    public Distributor populateEntity(final int idX, final int contractLengthX, final int budgetX,
+                                      final int infrastructureCostX, final int productionCostX) {
+        this.id = idX;
+        this.contractLength = contractLengthX;
+        this.budget = budgetX;
+        this.infrastructureCost = infrastructureCostX;
+        this.productionCost = productionCostX;
+        this.computePrices();
+        return this;
+    }
+
+    /**
+     * update distributor prices
+     *
+     */
+    public void updatesCosts(final int infrastructureCostX, final int productionCostX) {
+        this.infrastructureCost = infrastructureCostX;
+        this.productionCost = productionCostX;
         this.computePrices();
     }
 
-    public void updatesCosts(int infrastructureCost, int productionCost) {
-        this.infrastructureCost = infrastructureCost;
-        this.productionCost = productionCost;
-        this.computePrices();
-    }
-
-    public void addContract(int customerId) {
-
+    /**
+     * add new contract to the dataset
+     *
+     */
+    public void addContract(final int customerId) {
         this.numberOfClients++;
         contracts.put(customerId, new Contract(customerId, this.contractCost, this.contractLength));
         Consumer consumer = Consumers.getInstance().getConsumers().get(customerId);
@@ -47,11 +63,19 @@ public class Distributor {
         consumer.setDistributorProfit(this.profit);
     }
 
-    public void clientBankrupt(int clientId) {
+    /**
+     * trigger for client bankrupt and delete the contract
+     *
+     */
+    public void clientBankrupt(final int clientId) {
         numberOfClients--;
         contracts.remove(clientId);
     }
 
+    /**
+     * distributor bankrupt trigger
+     *
+     */
     public void declareBankruptcy() {
         this.isBankrupt = true;
         for (Map.Entry<Integer, Contract> entry : contracts.entrySet()) {
@@ -62,40 +86,47 @@ public class Distributor {
 
     }
 
+    /**
+     * pay distributor bills
+     *
+     */
     public void payBills() {
         computePricesBills();
-        if (id == 1) {
-//            System.out.println("buget inainte "+ this.budget);
-//            System.out.println("nr clienti care platesc " + this.monthlyClients);
-//            System.out.println("costa infra " + this.infrastructureCost);
-//            System.out.println("cost prod " + this.finalProductionCost);
-        }
         if (this.budget - this.infrastructureCost - this.finalProductionCost < 0) {
             this.declareBankruptcy();
         }
         this.budget = this.budget - this.infrastructureCost - this.finalProductionCost;
         monthlyClients = 0;
-        if (id == 1) {
-//            System.out.println("buget dupa "+ this.budget);
-        }
     }
 
-    public void receivePayment(int invoice) {
-//        System.out.println("Receive Payment " + id + " -> " + invoice);
+    /**
+     * receive bills payment
+     *
+     */
+    public void receivePayment(final int invoice) {
         this.budget = this.budget + invoice;
     }
 
+    /**
+     * compute new contracts price
+     *
+     */
     public void computePrices() {
         this.finalProductionCost = this.productionCost * this.numberOfClients;
         this.profit = (int) Math.round(Math.floor(0.2 * this.productionCost));
         if (this.numberOfClients == 0) {
             this.contractCost = infrastructureCost + this.productionCost + this.profit;
         } else {
-            this.contractCost = (int) Math.round(Math.floor((double)this.infrastructureCost / (double)this.numberOfClients) +
-                    this.productionCost + this.profit);
+            this.contractCost = (int) Math.round(Math.floor(
+                    (double) this.infrastructureCost / (double) this.numberOfClients)
+                    + this.productionCost + this.profit);
         }
     }
 
+    /**
+     * compute price for distributor bill
+     *
+     */
     public void computePricesBills() {
         this.finalProductionCost = this.productionCost * this.monthlyClients;
     }
@@ -108,7 +139,7 @@ public class Distributor {
         return contractCost;
     }
 
-    public void setContractCost(int contractCost) {
+    public void setContractCost(final int contractCost) {
         this.contractCost = contractCost;
     }
 
@@ -116,7 +147,7 @@ public class Distributor {
         return profit;
     }
 
-    public void setProfit(int profit) {
+    public void setProfit(final int profit) {
         this.profit = profit;
     }
 
@@ -124,11 +155,15 @@ public class Distributor {
         return monthlyClients;
     }
 
+    /**
+     * setter for monthly clients, edge case of client bankrupt before paying
+     *
+     */
     public void setMonthlyClients() {
         this.monthlyClients = numberOfClients;
     }
 
-    public void setNumberOfClients(int numberOfClients) {
+    public void setNumberOfClients(final int numberOfClients) {
         this.numberOfClients = numberOfClients;
     }
 
@@ -140,7 +175,7 @@ public class Distributor {
         return finalProductionCost;
     }
 
-    public void setFinalProductionCost(int finalProductionCost) {
+    public void setFinalProductionCost(final int finalProductionCost) {
         this.finalProductionCost = finalProductionCost;
     }
 
@@ -148,7 +183,7 @@ public class Distributor {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -156,7 +191,7 @@ public class Distributor {
         return contractLength;
     }
 
-    public void setContractLength(int contractLength) {
+    public void setContractLength(final int contractLength) {
         this.contractLength = contractLength;
     }
 
@@ -164,7 +199,7 @@ public class Distributor {
         return budget;
     }
 
-    public void setBudget(int budget) {
+    public void setBudget(final int budget) {
         this.budget = budget;
     }
 
@@ -172,7 +207,7 @@ public class Distributor {
         return infrastructureCost;
     }
 
-    public void setInfrastructureCost(int infrastructureCost) {
+    public void setInfrastructureCost(final int infrastructureCost) {
         this.infrastructureCost = infrastructureCost;
     }
 
@@ -180,7 +215,7 @@ public class Distributor {
         return productionCost;
     }
 
-    public void setProductionCost(int productionCost) {
+    public void setProductionCost(final int productionCost) {
         this.productionCost = productionCost;
     }
 
@@ -188,11 +223,15 @@ public class Distributor {
         return isBankrupt;
     }
 
-    public void setBankrupt(boolean bankrupt) {
+    public void setBankrupt(final boolean bankrupt) {
         isBankrupt = bankrupt;
     }
 
-    public void exportContracts(){
+    /**
+     * export contracts from hashmap to arraylist
+     *
+     */
+    public void exportContracts() {
         for (Map.Entry<Integer, Contract> entry : contracts.entrySet()) {
             contractsToExport.add(entry.getValue());
         }
@@ -200,11 +239,11 @@ public class Distributor {
 
     @Override
     public String toString() {
-        return "{" +
-                "\"id\":" + id +
-                ", \"budget\":" + budget +
-                ", \"isBankrupt\":" + isBankrupt +
-                ", \"contracts\":" + contractsToExport +
-                '}';
+        return "{"
+                + "\"id\":" + id
+                + ", \"budget\":" + budget
+                + ", \"isBankrupt\":" + isBankrupt
+                + ", \"contracts\":" + contractsToExport
+                + '}';
     }
 }

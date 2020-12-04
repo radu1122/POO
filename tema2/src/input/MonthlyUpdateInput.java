@@ -2,7 +2,7 @@ package input;
 
 import java.util.List;
 
-public class MonthlyUpdateInput {
+public final class MonthlyUpdateInput {
     private List<ConsumerInput> newConsumers;
     private List<CostChange> costsChanges;
 
@@ -10,7 +10,7 @@ public class MonthlyUpdateInput {
         return newConsumers;
     }
 
-    public void setNewConsumers(List<ConsumerInput> newConsumers) {
+    public void setNewConsumers(final List<ConsumerInput> newConsumers) {
         this.newConsumers = newConsumers;
     }
 
@@ -18,15 +18,15 @@ public class MonthlyUpdateInput {
         return costsChanges;
     }
 
-    public void setCostsChanges(List<CostChange> costsChanges) {
+    public void setCostsChanges(final List<CostChange> costsChanges) {
         this.costsChanges = costsChanges;
     }
 
     @Override
     public String toString() {
-        return "MonthlyUpdateInput{" +
-                "newConsumers=" + newConsumers +
-                ", costsChanges=" + costsChanges +
-                '}';
+        return "MonthlyUpdateInput{"
+                + "newConsumers=" + newConsumers
+                + ", costsChanges=" + costsChanges
+                + '}';
     }
 }

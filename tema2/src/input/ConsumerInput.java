@@ -1,6 +1,6 @@
 package input;
 
-public class ConsumerInput {
+public final class ConsumerInput {
     private int id;
     private int initialBudget;
     private int monthlyIncome;
@@ -9,7 +9,7 @@ public class ConsumerInput {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
 
@@ -17,7 +17,7 @@ public class ConsumerInput {
         return initialBudget;
     }
 
-    public void setInitialBudget(int initialBudget) {
+    public void setInitialBudget(final int initialBudget) {
         this.initialBudget = initialBudget;
     }
 
@@ -25,16 +25,16 @@ public class ConsumerInput {
         return monthlyIncome;
     }
 
-    public void setMonthlyIncome(int monthlyIncome) {
+    public void setMonthlyIncome(final int monthlyIncome) {
         this.monthlyIncome = monthlyIncome;
     }
 
     @Override
     public String toString() {
-        return "ConsumerInput{" +
-                "id=" + id +
-                ", initialBudget=" + initialBudget +
-                ", monthlyIncome=" + monthlyIncome +
-                '}';
+        return "ConsumerInput{"
+                + "id=" + id
+                + ", initialBudget=" + initialBudget
+                + ", monthlyIncome=" + monthlyIncome
+                + '}';
     }
 }

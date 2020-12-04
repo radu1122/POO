@@ -1,8 +1,8 @@
-package dataSet;
+package dataset;
 
 import java.util.ArrayList;
 
-public class Distributors {
+public final class Distributors {
     private static Distributors singleInstance = null;
 
     private ArrayList<Distributor> distributors = new ArrayList<>();
@@ -13,25 +13,37 @@ public class Distributors {
         return distributors;
     }
 
-    public void setDistributors(ArrayList<Distributor> distributors) {
+    public void setDistributors(final ArrayList<Distributor> distributors) {
         this.distributors = distributors;
     }
 
-    public void addDistributor(Distributor distributor) {
+    /**
+     * add new distributor to the dataset
+     *
+     */
+    public void addDistributor(final Distributor distributor) {
         this.distributors.add(distributor);
     }
 
-    public void updateCosts(int id, int infrastructureCost, int productionCost) {
+    /**
+     * update distributor cost
+     *
+     */
+    public void updateCosts(final int id, final int infrastructureCost, final int productionCost) {
         distributors.get(id).updatesCosts(infrastructureCost, productionCost);
     }
 
+    /**
+     * trigger compute prices for all distributors
+     *
+     */
     public void computePrices() {
         int id = 0;
-        int minCost = 32000;
-        boolean hasDistributors = false;
+        int minCost = Integer.MAX_VALUE;
+        boolean hasDistributorsX = false;
         for (Distributor distributor : distributors) {
             if (!distributor.isBankrupt()) {
-                hasDistributors = true;
+                hasDistributorsX = true;
                 distributor.computePrices();
                 int cost =  distributor.getContractCost();
                 if (cost < minCost) {
@@ -40,10 +52,14 @@ public class Distributors {
                 }
             }
         }
-        this.hasDistributors = hasDistributors;
+        this.hasDistributors = hasDistributorsX;
         this.distributorMinId = id;
     }
 
+    /**
+     * trigger distributor pay bills
+     *
+     */
     public void payBills() {
         for (Distributor distributor : distributors) {
             if (!distributor.isBankrupt()) {
@@ -56,7 +72,7 @@ public class Distributors {
         return hasDistributors;
     }
 
-    public void setHasDistributors(boolean hasDistributors) {
+    public void setHasDistributors(final boolean hasDistributors) {
         this.hasDistributors = hasDistributors;
     }
 
@@ -64,17 +80,26 @@ public class Distributors {
         return distributorMinId;
     }
 
-    public void setDistributorMinId(int distributorMinId) {
+    public void setDistributorMinId(final int distributorMinId) {
         this.distributorMinId = distributorMinId;
     }
 
+    /**
+     * get instance of the dataSet
+     *
+     */
     public static Distributors getInstance() {
-        if (singleInstance == null)
+        if (singleInstance == null) {
             singleInstance = new Distributors();
+        }
 
         return singleInstance;
     }
 
+    /**
+     * trigger arraylist to hashmap of every distributor
+     *
+     */
     public void prepareExport() {
         for (Distributor distributor : distributors) {
             distributor.exportContracts();
