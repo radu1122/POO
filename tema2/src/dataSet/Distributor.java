@@ -64,14 +64,24 @@ public class Distributor {
 
     public void payBills() {
         computePricesBills();
+        if (id == 1) {
+//            System.out.println("buget inainte "+ this.budget);
+//            System.out.println("nr clienti care platesc " + this.monthlyClients);
+//            System.out.println("costa infra " + this.infrastructureCost);
+//            System.out.println("cost prod " + this.finalProductionCost);
+        }
         if (this.budget - this.infrastructureCost - this.finalProductionCost < 0) {
             this.declareBankruptcy();
         }
         this.budget = this.budget - this.infrastructureCost - this.finalProductionCost;
         monthlyClients = 0;
+        if (id == 1) {
+//            System.out.println("buget dupa "+ this.budget);
+        }
     }
 
     public void receivePayment(int invoice) {
+//        System.out.println("Receive Payment " + id + " -> " + invoice);
         this.budget = this.budget + invoice;
     }
 
@@ -194,7 +204,7 @@ public class Distributor {
                 "\"id\":" + id +
                 ", \"budget\":" + budget +
                 ", \"isBankrupt\":" + isBankrupt +
-                ", \"contracts\":" + contracts +
+                ", \"contracts\":" + contractsToExport +
                 '}';
     }
 }

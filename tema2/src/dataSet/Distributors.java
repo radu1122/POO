@@ -7,6 +7,7 @@ public class Distributors {
 
     private ArrayList<Distributor> distributors = new ArrayList<>();
     private int distributorMinId;
+    private boolean hasDistributors;
 
     public ArrayList<Distributor> getDistributors() {
         return distributors;
@@ -27,8 +28,10 @@ public class Distributors {
     public void computePrices() {
         int id = 0;
         int minCost = 32000;
+        boolean hasDistributors = false;
         for (Distributor distributor : distributors) {
             if (!distributor.isBankrupt()) {
+                hasDistributors = true;
                 distributor.computePrices();
                 int cost =  distributor.getContractCost();
                 if (cost < minCost) {
@@ -37,6 +40,7 @@ public class Distributors {
                 }
             }
         }
+        this.hasDistributors = hasDistributors;
         this.distributorMinId = id;
     }
 
@@ -46,6 +50,14 @@ public class Distributors {
                 distributor.payBills();
             }
         }
+    }
+
+    public boolean getHasDistributors() {
+        return hasDistributors;
+    }
+
+    public void setHasDistributors(boolean hasDistributors) {
+        this.hasDistributors = hasDistributors;
     }
 
     public int getDistributorMinId() {

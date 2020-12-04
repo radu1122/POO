@@ -65,6 +65,10 @@ public class Main {
 
             distributors.computePrices();
 
+            if (!distributors.getHasDistributors()) {
+                break;
+            }
+
             consumers.checkContracts();
 
             consumers.makeContracts();
@@ -75,8 +79,9 @@ public class Main {
 
             distributors.payBills();
 
-            System.out.println("{\"consumers\":" + consumers + "," +
-                    "\"distributors\":" + distributors + "}");
+//            System.out.println(
+////                    "{\"consumers\":" + consumers + "," +
+//                    "\"distributors\":" + distributors + "}");
         }
 
         distributors.prepareExport();

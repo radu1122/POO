@@ -57,10 +57,8 @@ public class Consumer {
 
     public void payBills() {
         this.budget = this.budget + monthlyIncome;
-        if (id == 1) {
-//            System.out.println("id "+ getId() + " factura veche " + lastInvoice + " -- " + distributorIdLastInvoice);
-//            System.out.println("id "+ getId() + " factura curenta " + currInvoice+ " -- " + distributorId);
-        }
+//        System.out.println("id "+ getId() + " factura veche " + lastInvoice + " -- " + distributorIdLastInvoice);
+//        System.out.println("id "+ getId() + " factura curenta " + currInvoice+ " -- " + distributorId);
         if (lastInvoice != 0) {
             int bill = (int) (Math.round(Math.floor(1.2 * lastInvoice)) + currInvoice);
             if (Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).isBankrupt()) {
