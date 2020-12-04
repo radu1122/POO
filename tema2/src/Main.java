@@ -75,8 +75,8 @@ public class Main {
 
             distributors.payBills();
 
-//            System.out.println("{\"consumers\":" + consumers + "," +
-//                    "\"distributors\":" + distributors + "}");
+            System.out.println("{\"consumers\":" + consumers + "," +
+                    "\"distributors\":" + distributors + "}");
         }
 
         distributors.prepareExport();

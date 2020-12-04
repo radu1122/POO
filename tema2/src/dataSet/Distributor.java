@@ -194,7 +194,7 @@ public class Distributor {
                 "\"id\":" + id +
                 ", \"budget\":" + budget +
                 ", \"isBankrupt\":" + isBankrupt +
-                ", \"contracts\":" + contractsToExport +
+                ", \"contracts\":" + contracts +
                 '}';
     }
 }
