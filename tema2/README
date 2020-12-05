@@ -1,0 +1,48 @@
+Copyright Radu-Andrei Dumitrescu 322CA 2020
+
+Time spent on homework: in 5 days -> 15 hours
+
+
+The main class can be opened with 2 arguments: 
+    - input file path -> json
+    - output file path -> json
+
+I used in the simulation 2 datasets;
+    - Distributors
+        - this class triggers all the functional analysis for every distributor
+        - the "dataset" is reprezented by an ArrayList
+        - this is a singleton
+        - add distributor to the dataset
+        - change distributor data
+    - Consumers
+        - this class triggers all the tasks that a consumer does
+        - the "dataset" is reprezented by an ArrayList
+        - this is also a singleton
+        - add consumer to the dataset
+
+I chose to use a singleton for each dataset because in the tasks I had to pass data through both of them
+and it was easier to call directly the singleton in any function of the project without passing it as a variable
+
+Entities:
+    - Distributor
+        - this is an extend of the Entity Class
+        - pay bills
+        - compute prices
+        - trigger bankrupt actions
+        - trigger consumer bankrupt actions
+        - here we also have the contracts with the consumers
+        - compute final coontracts form for export
+    Consumer
+        - this is an extend of the Entity Class
+        - make contract with a distributor
+        - pay bills
+        - trigger bankrupt actions
+        - trigger distributor bankrupt actions
+        - compute final budget
+
+I used factory design pattern for these 2 entities because I think it makes it easier to be called everywhere and 
+probably will help me a lot in the next step of the project where I will probably have more entities.
+
+Problems encountered:
+    - some of the tests where wrong in the beginning
+    - there were one or two edge cases where I needed aditional informations
