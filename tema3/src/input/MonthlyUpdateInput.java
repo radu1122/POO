@@ -4,7 +4,8 @@ import java.util.List;
 
 public final class MonthlyUpdateInput {
     private List<ConsumerInput> newConsumers;
-    private List<CostChange> costsChanges;
+    private List<DistributorChange> distributorChanges;
+    private List<ProducerChange> producerChanges;
 
     public List<ConsumerInput> getNewConsumers() {
         return newConsumers;
@@ -14,19 +15,28 @@ public final class MonthlyUpdateInput {
         this.newConsumers = newConsumers;
     }
 
-    public List<CostChange> getCostsChanges() {
-        return costsChanges;
+    public List<DistributorChange> getDistributorChanges() {
+        return distributorChanges;
     }
 
-    public void setCostsChanges(final List<CostChange> costsChanges) {
-        this.costsChanges = costsChanges;
+    public void setDistributorChanges(List<DistributorChange> distributorChanges) {
+        this.distributorChanges = distributorChanges;
+    }
+
+    public List<ProducerChange> getProducerChanges() {
+        return producerChanges;
+    }
+
+    public void setProducerChanges(List<ProducerChange> producerChanges) {
+        this.producerChanges = producerChanges;
     }
 
     @Override
     public String toString() {
-        return "MonthlyUpdateInput{"
-                + "newConsumers=" + newConsumers
-                + ", costsChanges=" + costsChanges
-                + '}';
+        return "MonthlyUpdateInput{" +
+                "newConsumers=" + newConsumers +
+                ", distributorChanges=" + distributorChanges +
+                ", producerChanges=" + producerChanges +
+                '}';
     }
 }

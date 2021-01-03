@@ -101,9 +101,18 @@ public final class Consumer extends Entity {
             }
             if (budget - bill < 0) {
                 this.declareBankruptcy();
+                if (budget - (int) (Math.round(Math.floor(indices * lastInvoice))) > 0) {
+                    if (distributorIdLastInvoice != distributorId) {
+                        Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).
+                                receivePayment((int) (Math.round(Math.floor(indices * lastInvoice))));
+                        lastInvoice = currInvoice;
+                        distributorIdLastInvoice = distributorId;
+                        currInvoice = 0;
+                    }
+                }
             } else {
                 budget = budget - bill;
-                if (Distributors.getInstance().getDistributors().
+                if (!Distributors.getInstance().getDistributors().
                         get(distributorIdLastInvoice).isBankrupt()) {
                     Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).
                             receivePayment((int) (Math.round(Math.floor(indices * lastInvoice))));

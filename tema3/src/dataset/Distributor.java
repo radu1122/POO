@@ -16,6 +16,8 @@ public final class Distributor extends Entity {
     private int numberOfClients = 0;
     private int finalProductionCost;
     private int monthlyClients = 0;
+    private int energyNeededKW;
+    private String producerStrategy;
     private final LinkedHashMap<Integer, Contract> contracts = new LinkedHashMap<>();
     private final ArrayList<Contract> contractsToExport = new ArrayList<>();
 
@@ -28,12 +30,14 @@ public final class Distributor extends Entity {
      *
      */
     public Distributor populateEntity(final int idX, final int contractLengthX, final int budgetX,
-                                      final int infrastructureCostX, final int productionCostX) {
+                                      final int infrastructureCostX, final int energyNeededKWX,
+                                      final String producerStrategyX) {
         this.id = idX;
         this.contractLength = contractLengthX;
         this.budget = budgetX;
         this.infrastructureCost = infrastructureCostX;
-        this.productionCost = productionCostX;
+        this.energyNeededKW = energyNeededKWX;
+        this.producerStrategy = producerStrategyX;
         this.computePrices();
         return this;
     }
@@ -42,9 +46,8 @@ public final class Distributor extends Entity {
      * update distributor prices
      *
      */
-    public void updatesCosts(final int infrastructureCostX, final int productionCostX) {
+    public void updatesCosts(final int infrastructureCostX) {
         this.infrastructureCost = infrastructureCostX;
-        this.productionCost = productionCostX;
         this.computePrices();
     }
 
@@ -225,6 +228,22 @@ public final class Distributor extends Entity {
 
     public void setBankrupt(final boolean bankrupt) {
         isBankrupt = bankrupt;
+    }
+
+    public int getEnergyNeededKW() {
+        return energyNeededKW;
+    }
+
+    public void setEnergyNeededKW(int energyNeededKW) {
+        this.energyNeededKW = energyNeededKW;
+    }
+
+    public String getProducerStrategy() {
+        return producerStrategy;
+    }
+
+    public void setProducerStrategy(String producerStrategy) {
+        this.producerStrategy = producerStrategy;
     }
 
     /**

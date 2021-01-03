@@ -5,6 +5,7 @@ import java.util.List;
 public final class InitialDataInput {
     private List<ConsumerInput> consumers;
     private List<DistributorInput> distributors;
+    private List<ProducerInput> producers;
 
     public List<ConsumerInput> getConsumers() {
         return consumers;
@@ -22,11 +23,20 @@ public final class InitialDataInput {
         this.distributors = distributors;
     }
 
+    public List<ProducerInput> getProducers() {
+        return producers;
+    }
+
+    public void setProducers(List<ProducerInput> producers) {
+        this.producers = producers;
+    }
+
     @Override
     public String toString() {
-        return "InitialDataInput{"
-                + "consumers=" + consumers
-                + ", distributors=" + distributors
-                + '}';
+        return "InitialDataInput{" +
+                "consumers=" + consumers +
+                ", distributors=" + distributors +
+                ", producers=" + producers +
+                '}';
     }
 }

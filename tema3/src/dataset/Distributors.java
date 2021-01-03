@@ -29,8 +29,8 @@ public final class Distributors {
      * update distributor cost
      *
      */
-    public void updateCosts(final int id, final int infrastructureCost, final int productionCost) {
-        distributors.get(id).updatesCosts(infrastructureCost, productionCost);
+    public void updateCosts(final int id, final int infrastructureCost) {
+        distributors.get(id).updatesCosts(infrastructureCost);
     }
 
     /**

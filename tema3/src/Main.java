@@ -5,7 +5,7 @@ import dataset.Distributors;
 import dataset.Entity;
 import dataset.EntityFactory;
 import input.ConsumerInput;
-import input.CostChange;
+import input.DistributorChange;
 import input.DistributorInput;
 import input.InputData;
 import input.MonthlyUpdateInput;
@@ -49,7 +49,8 @@ public final class Main {
                     distributor.getContractLength(),
                     distributor.getInitialBudget(),
                     distributor.getInitialInfrastructureCost(),
-                    distributor.getInitialProductionCost()));
+                    distributor.getEnergyNeededKW(),
+                    distributor.getProducerStrategy()));
         }
 
         distributors.computePrices();
@@ -75,9 +76,8 @@ public final class Main {
             }
 
             // update distributors cost
-            for (CostChange distributor : currentRound.getCostsChanges()) {
-                distributors.updateCosts(distributor.getId(), distributor.getInfrastructureCost(),
-                        distributor.getProductionCost());
+            for (DistributorChange distributor : currentRound.getDistributorChanges()) {
+                distributors.updateCosts(distributor.getId(), distributor.getInfrastructureCost());
             }
 
             distributors.computePrices();

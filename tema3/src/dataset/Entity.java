@@ -23,7 +23,8 @@ public class Entity {
                                     final int contractLength,
                                     final int initialBudget,
                                     final int initialInfrastructureCost,
-                                    final int initialProductionCost) {
+                                    final int energyNeededKW,
+                                    final String producerStrategy) {
     return (Distributor) this;
   }
 }
