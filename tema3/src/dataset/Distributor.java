@@ -1,6 +1,7 @@
 package dataset;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,6 +22,10 @@ public final class Distributor extends Entity {
     private final LinkedHashMap<Integer, Contract> contracts = new LinkedHashMap<>();
     private final ArrayList<Contract> contractsToExport = new ArrayList<>();
 
+    private final ArrayList<Integer> producerEnergy = new ArrayList<>();
+    private final ArrayList<Double> producerCost = new ArrayList<>();
+    private final ArrayList<Integer> producerId = new ArrayList<>();
+
     public Distributor() {
 
     }
@@ -40,6 +45,69 @@ public final class Distributor extends Entity {
         this.producerStrategy = producerStrategyX;
         this.computePrices();
         return this;
+    }
+
+    public void selectProducers() {
+        ArrayList<Producer> producers = Producers.getInstance().getProducers();
+        producerEnergy.clear();
+        producerCost.clear();
+        producerId.clear();
+        Comparator<Producer> comparatorProducers = switch (producerStrategy) {
+            case "GREEN" -> (Producer o1, Producer o2) -> {
+                if (o1.getGreenEnergy() == o2.getGreenEnergy()) {
+                    if (o1.getPriceKW() == o2.getPriceKW()) {
+                        if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
+                            return o1.getId() - o2.getId();
+                        } else {
+                            return o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+                        }
+                    } else {
+                        return Double.compare(o1.getPriceKW(), o2.getPriceKW());
+                    }
+                } else {
+                    return o1.getGreenEnergy() - o2.getGreenEnergy();
+                }
+            };
+            case "PRICE" -> (Producer o1, Producer o2) -> {
+                if (o1.getPriceKW() == o2.getPriceKW()) {
+                    if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
+                        return o1.getId() - o2.getId();
+                    } else {
+                        return o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+                    }
+                } else {
+                    return Double.compare(o1.getPriceKW(), o2.getPriceKW());
+                }
+            };
+            default -> (Producer o1, Producer o2) ->  {
+                if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
+                    return o1.getId() - o2.getId();
+                } else {
+                    return o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+                }
+            };
+        };
+
+        producers.sort(comparatorProducers);
+
+        int remainingEnergyNeeded = energyNeededKW;
+        for (Producer producer : producers) {
+            if (producer.getMaxDistributors() != producer.getActualDistributors()) {
+                if (remainingEnergyNeeded - producer.getEnergyPerDistributor() < 0) {
+                    producerEnergy.add(remainingEnergyNeeded);
+                } else {
+                    producerEnergy.add(producer.getEnergyPerDistributor());
+                }
+                producerCost.add(producer.getPriceKW());
+                producerId.add(producer.getId());
+                producer.addDistributor(this.id);
+                remainingEnergyNeeded = remainingEnergyNeeded - producer.getEnergyPerDistributor();
+                if (remainingEnergyNeeded <= 0) {
+                    break;
+                }
+
+            }
+        }
     }
 
     /**
@@ -86,7 +154,9 @@ public final class Distributor extends Entity {
             Consumers.getInstance().getConsumers().get(key).distributorBankrupt();
         }
         contracts.clear();
-
+        for (Integer producer : producerId) {
+            Producers.getInstance().getProducers().get(producer).deleteDistributor(this.id);
+        }
     }
 
     /**
@@ -115,6 +185,15 @@ public final class Distributor extends Entity {
      *
      */
     public void computePrices() {
+        productionCost = 0;
+        double cost = 0;
+        for (int i = 0; i < producerId.size(); i++) {
+            System.out.println("COST " + producerCost.get(i) + "-- ENERGY " + producerEnergy.get(i));
+            cost = cost + (producerCost.get(i) * producerEnergy.get(i));
+        }
+        System.out.println("cost " + cost);
+        productionCost = (int) Math.round(Math.floor(cost / 10));
+        System.out.println("prod cost " + productionCost);
         this.finalProductionCost = this.productionCost * this.numberOfClients;
         this.profit = (int) Math.round(Math.floor(0.2 * this.productionCost));
         if (this.numberOfClients == 0) {
@@ -260,7 +339,10 @@ public final class Distributor extends Entity {
     public String toString() {
         return "{"
                 + "\"id\":" + id
+                + ", \"energyNeededKW\":" + energyNeededKW
+                + ", \"contractCost\":" + contractCost
                 + ", \"budget\":" + budget
+                + ", \"producerStrategy\":" + producerStrategy
                 + ", \"isBankrupt\":" + isBankrupt
                 + ", \"contracts\":" + contractsToExport
                 + '}';

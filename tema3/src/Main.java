@@ -1,14 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dataset.Consumer;
-import dataset.Consumers;
-import dataset.Distributors;
-import dataset.Entity;
-import dataset.EntityFactory;
-import input.ConsumerInput;
-import input.DistributorChange;
-import input.DistributorInput;
-import input.InputData;
-import input.MonthlyUpdateInput;
+import dataset.*;
+import input.*;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -32,6 +24,7 @@ public final class Main {
 
         Consumers consumers = Consumers.getInstance();
         Distributors distributors = Distributors.getInstance();
+        Producers producers = Producers.getInstance();
 
         // add initial consumers to the dataSet consumers
         for (ConsumerInput consumer : inputData.getInitialData().getConsumers()) {
@@ -52,6 +45,15 @@ public final class Main {
                     distributor.getEnergyNeededKW(),
                     distributor.getProducerStrategy()));
         }
+
+        // add initial producers to the dataSet producers
+        for (ProducerInput producer : inputData.getInitialData().getProducers()) {
+            producers.addProducer(new Producer(producer.getId(),
+                    producer.getEnergyType(), producer.getMaxDistributors(),
+                    producer.getPriceKW(), producer.getEnergyPerDistributor()));
+        }
+
+        distributors.selectProducers();
 
         distributors.computePrices();
 
@@ -75,16 +77,24 @@ public final class Main {
                         newConsumer.getMonthlyIncome()));
             }
 
-            // update distributors cost
+            // update infrastructure cost
             for (DistributorChange distributor : currentRound.getDistributorChanges()) {
                 distributors.updateCosts(distributor.getId(), distributor.getInfrastructureCost());
             }
 
-            distributors.computePrices();
+            // update energyPerDistributor on producers
+            for (ProducerChange producer : currentRound.getProducerChanges()) {
+                producers.updateCosts(producer.getId(), producer.getEnergyPerDistributor());
+
+            }
+
+            distributors.computePrices(); // to be changed
 
             if (!distributors.getHasDistributors()) {
                 break;
             }
+
+            producers.computeMonthlyStats();
 
             consumers.checkContracts();
 
@@ -97,14 +107,20 @@ public final class Main {
             distributors.payBills();
 
             System.out.println("{\"consumers\":" + consumers + ","
-                    + "\"distributors\":" + distributors + "}");
+                    + "\"distributors\":" + distributors + ","
+                    + "\"energyProducers\":" + producers + "}");
         }
 
         distributors.prepareExport();
 
+        System.out.println("{\"consumers\":" + consumers + ","
+                + "\"distributors\":" + distributors + ","
+                + "\"energyProducers\":" + producers + "}");
+
         PrintWriter writer = new PrintWriter(outputFile, StandardCharsets.UTF_8);
         writer.println("{\"consumers\":" + consumers + ","
-                + "\"distributors\":" + distributors + "}");
+                + "\"distributors\":" + distributors + ","
+                + "\"energyProducers\":" + producers + "}");
         writer.close();
         resetSingleton();
     }

@@ -4,7 +4,7 @@ public class ProducerInput {
   private int id;
   private String energyType;
   private int maxDistributors;
-  private int priceKW;
+  private double priceKW;
   private int energyPerDistributor;
 
   public int getId() {
@@ -31,11 +31,11 @@ public class ProducerInput {
     this.maxDistributors = maxDistributors;
   }
 
-  public int getPriceKW() {
+  public double getPriceKW() {
     return priceKW;
   }
 
-  public void setPriceKW(int priceKW) {
+  public void setPriceKW(double priceKW) {
     this.priceKW = priceKW;
   }
 

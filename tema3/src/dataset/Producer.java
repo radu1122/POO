@@ -9,14 +9,15 @@ public class Producer {
   private int id;
   private String energyType;
   private int maxDistributors;
-  private int priceKW;
+  private double priceKW;
   private int energyPerDistributor;
   private int actualDistributors;
+  private final int greenEnergy;
   private final ArrayList<Integer> distributorsList = new ArrayList<>();
   private final ArrayList<MonthlyStats> monthlyStats = new ArrayList<>();
 
   public Producer(final int id, final String energyTypeX,
-                  final int maxDistributorsX, final int priceKWX,
+                  final int maxDistributorsX, final double priceKWX,
                   final int energyPerDistributorX) {
     this.id = id;
     this.energyType = energyTypeX;
@@ -24,6 +25,11 @@ public class Producer {
     this.priceKW = priceKWX;
     this.energyPerDistributor = energyPerDistributorX;
     this.actualDistributors = 0;
+    if (energyTypeX.equals("COAL") || energyTypeX.equals("NUCLEAR")) {
+      greenEnergy = 0;
+    } else {
+      greenEnergy = 1;
+    }
   }
 
   public void deleteDistributor(int id) {
@@ -69,11 +75,11 @@ public class Producer {
     this.maxDistributors = maxDistributors;
   }
 
-  public int getPriceKW() {
+  public double getPriceKW() {
     return priceKW;
   }
 
-  public void setPriceKW(int priceKW) {
+  public void setPriceKW(double priceKW) {
     this.priceKW = priceKW;
   }
 
@@ -91,6 +97,14 @@ public class Producer {
 
   public void setActualDistributors(int actualDistributors) {
     this.actualDistributors = actualDistributors;
+  }
+
+  public int getGreenEnergy() {
+    return greenEnergy;
+  }
+
+  public ArrayList<Integer> getDistributorsList() {
+    return distributorsList;
   }
 
   @Override

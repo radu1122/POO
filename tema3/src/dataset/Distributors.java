@@ -57,6 +57,18 @@ public final class Distributors {
     }
 
     /**
+     * trigger distributor select producers
+     *
+     */
+    public void selectProducers() {
+        for (Distributor distributor : distributors) {
+            if (!distributor.isBankrupt()) {
+                distributor.selectProducers();
+            }
+        }
+    }
+
+    /**
      * trigger distributor pay bills
      *
      */

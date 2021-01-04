@@ -7,14 +7,20 @@ public final class Producers {
 
   private final ArrayList<Producer> producers = new ArrayList<>();
 
-  public void addProducer(final Producer producer) {
-    this.producers.add(producer);
-  }
-
   /**
    * add new producer to the dataset
    *
    */
+  public void addProducer(final Producer producer) {
+    this.producers.add(producer);
+  }
+
+  public void computeMonthlyStats() {
+    for (Producer producer : producers) {
+      producer.computeMonthlyStats();
+    }
+  }
+
   public ArrayList<Producer> getProducers() {
     return producers;
   }
@@ -25,6 +31,9 @@ public final class Producers {
    */
   public void updateCosts(final int id, final int energyPerDistributor) {
     producers.get(id).updatesCosts(energyPerDistributor);
+    for (Integer distributorId : producers.get(id).getDistributorsList()) {
+      Distributors.getInstance().getDistributors().get(distributorId).selectProducers();
+    }
   }
 
   /**
