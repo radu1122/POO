@@ -48,7 +48,10 @@ public final class Distributor extends Entity {
     }
 
     public void selectProducers() {
-        ArrayList<Producer> producers = Producers.getInstance().getProducers();
+        ArrayList<Producer> producers = new ArrayList<>(Producers.getInstance().getProducers());
+        for (Integer prodId : producerId) {
+            Producers.getInstance().getProducers().get(prodId).deleteDistributor(this.id);
+        }
         producerEnergy.clear();
         producerCost.clear();
         producerId.clear();
@@ -59,7 +62,7 @@ public final class Distributor extends Entity {
                         if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
                             return o1.getId() - o2.getId();
                         } else {
-                            return o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+                            return o2.getEnergyPerDistributor() - o1.getEnergyPerDistributor();
                         }
                     } else {
                         return Double.compare(o1.getPriceKW(), o2.getPriceKW());
@@ -73,7 +76,7 @@ public final class Distributor extends Entity {
                     if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
                         return o1.getId() - o2.getId();
                     } else {
-                        return o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+                        return o2.getEnergyPerDistributor() - o1.getEnergyPerDistributor();
                     }
                 } else {
                     return Double.compare(o1.getPriceKW(), o2.getPriceKW());
@@ -83,7 +86,7 @@ public final class Distributor extends Entity {
                 if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
                     return o1.getId() - o2.getId();
                 } else {
-                    return o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+                    return o2.getEnergyPerDistributor() - o1.getEnergyPerDistributor();
                 }
             };
         };
@@ -93,11 +96,11 @@ public final class Distributor extends Entity {
         int remainingEnergyNeeded = energyNeededKW;
         for (Producer producer : producers) {
             if (producer.getMaxDistributors() != producer.getActualDistributors()) {
-                if (remainingEnergyNeeded - producer.getEnergyPerDistributor() < 0) {
-                    producerEnergy.add(remainingEnergyNeeded);
-                } else {
-                    producerEnergy.add(producer.getEnergyPerDistributor());
-                }
+//                if (remainingEnergyNeeded - producer.getEnergyPerDistributor() < 0) {
+//                    producerEnergy.add(remainingEnergyNeeded);
+//                } else {
+                producerEnergy.add(producer.getEnergyPerDistributor());
+//                }
                 producerCost.add(producer.getPriceKW());
                 producerId.add(producer.getId());
                 producer.addDistributor(this.id);
@@ -188,12 +191,9 @@ public final class Distributor extends Entity {
         productionCost = 0;
         double cost = 0;
         for (int i = 0; i < producerId.size(); i++) {
-            System.out.println("COST " + producerCost.get(i) + "-- ENERGY " + producerEnergy.get(i));
             cost = cost + (producerCost.get(i) * producerEnergy.get(i));
         }
-        System.out.println("cost " + cost);
         productionCost = (int) Math.round(Math.floor(cost / 10));
-        System.out.println("prod cost " + productionCost);
         this.finalProductionCost = this.productionCost * this.numberOfClients;
         this.profit = (int) Math.round(Math.floor(0.2 * this.productionCost));
         if (this.numberOfClients == 0) {
@@ -342,8 +342,8 @@ public final class Distributor extends Entity {
                 + ", \"energyNeededKW\":" + energyNeededKW
                 + ", \"contractCost\":" + contractCost
                 + ", \"budget\":" + budget
-                + ", \"producerStrategy\":" + producerStrategy
-                + ", \"isBankrupt\":" + isBankrupt
+                + ", \"producerStrategy\":\"" + producerStrategy
+                + "\", \"isBankrupt\":" + isBankrupt
                 + ", \"contracts\":" + contractsToExport
                 + '}';
     }

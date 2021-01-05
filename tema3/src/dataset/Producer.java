@@ -26,9 +26,9 @@ public class Producer {
     this.energyPerDistributor = energyPerDistributorX;
     this.actualDistributors = 0;
     if (energyTypeX.equals("COAL") || energyTypeX.equals("NUCLEAR")) {
-      greenEnergy = 0;
-    } else {
       greenEnergy = 1;
+    } else {
+      greenEnergy = 0;
     }
   }
 
@@ -113,8 +113,8 @@ public class Producer {
             + "\"id\":" + id
             + ", \"maxDistributors\":" + maxDistributors
             + ", \"priceKW\":" + priceKW
-            + ", \"energyType\":" + energyType
-            + ", \"energyPerDistributor\":" + energyPerDistributor
+            + ", \"energyType\":\"" + energyType
+            + "\", \"energyPerDistributor\":" + energyPerDistributor
             + ", \"monthlyStats\":" + monthlyStats
             + '}';
   }

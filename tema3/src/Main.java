@@ -16,6 +16,7 @@ public final class Main {
      *
      */
     public static void main(final String[] args) throws Exception {
+        resetSingleton();
         String inputFile = args[0];
         String outputFile = args[1];
 
@@ -106,9 +107,9 @@ public final class Main {
 
             distributors.payBills();
 
-            System.out.println("{\"consumers\":" + consumers + ","
-                    + "\"distributors\":" + distributors + ","
-                    + "\"energyProducers\":" + producers + "}");
+//            System.out.println("{\"consumers\":" + consumers + ","
+//                    + "\"distributors\":" + distributors + ","
+//                    + "\"energyProducers\":" + producers + "}");
         }
 
         distributors.prepareExport();
@@ -132,5 +133,6 @@ public final class Main {
     public static void resetSingleton() {
         Distributors.getInstance().getDistributors().clear();
         Consumers.getInstance().getConsumers().clear();
+        Producers.getInstance().getProducers().clear();
     }
 }
