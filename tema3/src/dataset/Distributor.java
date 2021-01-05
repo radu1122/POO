@@ -19,6 +19,7 @@ public final class Distributor extends Entity {
     private int monthlyClients = 0;
     private int energyNeededKW;
     private String producerStrategy;
+    private boolean flag = true;
     private final LinkedHashMap<Integer, Contract> contracts = new LinkedHashMap<>();
     private final ArrayList<Contract> contractsToExport = new ArrayList<>();
 
@@ -47,14 +48,28 @@ public final class Distributor extends Entity {
         return this;
     }
 
-    public void selectProducers() {
-        ArrayList<Producer> producers = new ArrayList<>(Producers.getInstance().getProducers());
+    public void producerFlagChange() {
+        this.flag = true;
+    }
+
+    public void clearProducers() {
+        if (!this.flag) {
+            return;
+        }
         for (Integer prodId : producerId) {
             Producers.getInstance().getProducers().get(prodId).deleteDistributor(this.id);
         }
         producerEnergy.clear();
         producerCost.clear();
         producerId.clear();
+    }
+
+    public void selectProducers() {
+        if (!this.flag) {
+            return;
+        }
+        this.flag = false;
+        ArrayList<Producer> producers = new ArrayList<>(Producers.getInstance().getProducers());
         Comparator<Producer> comparatorProducers = switch (producerStrategy) {
             case "GREEN" -> (Producer o1, Producer o2) -> {
                 if (o1.getGreenEnergy() == o2.getGreenEnergy()) {
@@ -92,7 +107,6 @@ public final class Distributor extends Entity {
         };
 
         producers.sort(comparatorProducers);
-
         int remainingEnergyNeeded = energyNeededKW;
         for (Producer producer : producers) {
             if (producer.getMaxDistributors() != producer.getActualDistributors()) {

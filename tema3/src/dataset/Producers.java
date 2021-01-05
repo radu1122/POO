@@ -32,7 +32,8 @@ public final class Producers {
   public void updateCosts(final int id, final int energyPerDistributor) {
     producers.get(id).updatesCosts(energyPerDistributor);
     for (Integer distributorId : producers.get(id).getDistributorsList()) {
-      Distributors.getInstance().getDistributors().get(distributorId).selectProducers();
+
+      Distributors.getInstance().getDistributors().get(distributorId).producerFlagChange();
     }
   }
 

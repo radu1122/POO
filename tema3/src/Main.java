@@ -83,19 +83,19 @@ public final class Main {
                 distributors.updateCosts(distributor.getId(), distributor.getInfrastructureCost());
             }
 
+
             // update energyPerDistributor on producers
             for (ProducerChange producer : currentRound.getProducerChanges()) {
                 producers.updateCosts(producer.getId(), producer.getEnergyPerDistributor());
 
             }
 
-            distributors.computePrices(); // to be changed
+            distributors.computePrices();
 
             if (!distributors.getHasDistributors()) {
                 break;
             }
 
-            producers.computeMonthlyStats();
 
             consumers.checkContracts();
 
@@ -106,6 +106,11 @@ public final class Main {
             consumers.payBills();
 
             distributors.payBills();
+
+            distributors.selectProducers();
+
+            producers.computeMonthlyStats();
+
 
 //            System.out.println("{\"consumers\":" + consumers + ","
 //                    + "\"distributors\":" + distributors + ","

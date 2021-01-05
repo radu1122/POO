@@ -44,7 +44,7 @@ public class Producer {
 
   public void computeMonthlyStats() {
     Collections.sort(distributorsList);
-    monthlyStats.add(new MonthlyStats(monthlyStats.size() + 1, distributorsList));
+    monthlyStats.add(new MonthlyStats(monthlyStats.size() + 1, new ArrayList<>(distributorsList)));
   }
 
   public void updatesCosts(final int energyPerDistributorX) {

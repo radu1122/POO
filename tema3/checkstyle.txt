@@ -1,9 +1,11 @@
 Starting audit...
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Consumer.java:95:26: '1.2' is a magic number. [MagicNumber]
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Consumer.java:107: Line is longer than 100 characters (found 102). [LineLength]
-[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:50:5: Missing a Javadoc comment. [MissingJavadocMethod]
-[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:196:61: '10' is a magic number. [MagicNumber]
-[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:198:51: '0.2' is a magic number. [MagicNumber]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:51:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:55:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:67:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:210:61: '10' is a magic number. [MagicNumber]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:212:51: '0.2' is a magic number. [MagicNumber]
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Producer.java:35:3: Class 'Producer' looks like designed for extension (can be subclassed), but the method 'deleteDistributor' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'Producer' final or making the method 'deleteDistributor' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Producer.java:35:3: Missing a Javadoc comment. [MissingJavadocMethod]
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Producer.java:35:37: 'id' hides a field. [HiddenField]
@@ -71,4 +73,4 @@ Starting audit...
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\Main.java:3:13: Using the '.*' form of import should be avoided - input.*. [AvoidStarImport]
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategies\EnergyChoiceStrategyType.java:10:25: Variable 'label' must be private and have accessor methods. [VisibilityModifier]
 Audit done.
-Checkstyle ends with 71 errors.
+Checkstyle ends with 73 errors.
