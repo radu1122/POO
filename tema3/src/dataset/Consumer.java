@@ -104,7 +104,8 @@ public final class Consumer extends Entity {
                 if (budget - (int) (Math.round(Math.floor(indices * lastInvoice))) > 0) {
                     if (distributorIdLastInvoice != distributorId) {
                         Distributors.getInstance().getDistributors().get(distributorIdLastInvoice).
-                                receivePayment((int) (Math.round(Math.floor(indices * lastInvoice))));
+                                receivePayment(
+                                        (int) (Math.round(Math.floor(indices * lastInvoice))));
                         lastInvoice = currInvoice;
                         distributorIdLastInvoice = distributorId;
                         currInvoice = 0;

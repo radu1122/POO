@@ -56,15 +56,4 @@ public final class DistributorInput {
         this.producerStrategy = producerStrategy;
     }
 
-    @Override
-    public String toString() {
-        return "DistributorInput{" +
-                "id=" + id +
-                ", contractLength=" + contractLength +
-                ", initialBudget=" + initialBudget +
-                ", initialInfrastructureCost=" + initialInfrastructureCost +
-                ", energyNeededKW=" + energyNeededKW +
-                ", producerStrategy='" + producerStrategy + '\'' +
-                '}';
-    }
 }

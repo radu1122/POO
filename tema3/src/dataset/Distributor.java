@@ -48,10 +48,19 @@ public final class Distributor extends Entity {
         return this;
     }
 
+    /**
+     * change flag for producers change
+     * part of the trigger api
+     *
+     */
     public void producerFlagChange() {
         this.flag = true;
     }
 
+    /**
+     * remove all producers of this distributor
+     *
+     */
     public void clearProducers() {
         if (!this.flag) {
             return;
@@ -64,10 +73,15 @@ public final class Distributor extends Entity {
         producerId.clear();
     }
 
+    /**
+     * select producers algorithm
+     *
+     */
     public void selectProducers() {
         if (!this.flag) {
             return;
         }
+        this.clearProducers();
         this.flag = false;
         ArrayList<Producer> producers = new ArrayList<>(Producers.getInstance().getProducers());
         Comparator<Producer> comparatorProducers = switch (producerStrategy) {
@@ -110,11 +124,7 @@ public final class Distributor extends Entity {
         int remainingEnergyNeeded = energyNeededKW;
         for (Producer producer : producers) {
             if (producer.getMaxDistributors() != producer.getActualDistributors()) {
-//                if (remainingEnergyNeeded - producer.getEnergyPerDistributor() < 0) {
-//                    producerEnergy.add(remainingEnergyNeeded);
-//                } else {
                 producerEnergy.add(producer.getEnergyPerDistributor());
-//                }
                 producerCost.add(producer.getPriceKW());
                 producerId.add(producer.getId());
                 producer.addDistributor(this.id);

@@ -31,12 +31,4 @@ public final class InitialDataInput {
         this.producers = producers;
     }
 
-    @Override
-    public String toString() {
-        return "InitialDataInput{" +
-                "consumers=" + consumers +
-                ", distributors=" + distributors +
-                ", producers=" + producers +
-                '}';
-    }
 }

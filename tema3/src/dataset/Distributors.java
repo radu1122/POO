@@ -61,11 +61,11 @@ public final class Distributors {
      *
      */
     public void selectProducers() {
-        for (Distributor distributor : distributors) {
-            if (!distributor.isBankrupt()) {
-                distributor.clearProducers();
-            }
-        }
+//        for (Distributor distributor : distributors) {
+//            if (!distributor.isBankrupt()) {
+//                distributor.clearProducers();
+//            }
+//        }
         for (Distributor distributor : distributors) {
             if (!distributor.isBankrupt()) {
                 distributor.selectProducers();

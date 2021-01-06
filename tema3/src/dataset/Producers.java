@@ -15,6 +15,10 @@ public final class Producers {
     this.producers.add(producer);
   }
 
+  /**
+   * trigger each producer to generate monthly Stats
+   *
+   */
   public void computeMonthlyStats() {
     for (Producer producer : producers) {
       producer.computeMonthlyStats();
@@ -32,7 +36,6 @@ public final class Producers {
   public void updateCosts(final int id, final int energyPerDistributor) {
     producers.get(id).updatesCosts(energyPerDistributor);
     for (Integer distributorId : producers.get(id).getDistributorsList()) {
-
       Distributors.getInstance().getDistributors().get(distributorId).producerFlagChange();
     }
   }

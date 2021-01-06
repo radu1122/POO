@@ -1,6 +1,6 @@
 package input;
 
-public class ProducerInput {
+public final class ProducerInput {
   private int id;
   private String energyType;
   private int maxDistributors;
@@ -47,14 +47,4 @@ public class ProducerInput {
     this.energyPerDistributor = energyPerDistributor;
   }
 
-  @Override
-  public String toString() {
-    return "ProducerInput{" +
-            "id=" + id +
-            ", energyType='" + energyType + '\'' +
-            ", maxDistributors=" + maxDistributors +
-            ", priceKW=" + priceKW +
-            ", energyPerDistributor=" + energyPerDistributor +
-            '}';
-  }
 }

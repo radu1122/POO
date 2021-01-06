@@ -31,12 +31,4 @@ public final class MonthlyUpdateInput {
         this.producerChanges = producerChanges;
     }
 
-    @Override
-    public String toString() {
-        return "MonthlyUpdateInput{" +
-                "newConsumers=" + newConsumers +
-                ", distributorChanges=" + distributorChanges +
-                ", producerChanges=" + producerChanges +
-                '}';
-    }
 }

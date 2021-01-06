@@ -1,6 +1,18 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dataset.*;
-import input.*;
+import dataset.Consumer;
+import dataset.Consumers;
+import dataset.Distributors;
+import dataset.Entity;
+import dataset.EntityFactory;
+import dataset.Producer;
+import dataset.Producers;
+import input.ConsumerInput;
+import input.DistributorChange;
+import input.DistributorInput;
+import input.InputData;
+import input.MonthlyUpdateInput;
+import input.ProducerChange;
+import input.ProducerInput;
 
 import java.io.File;
 import java.io.PrintWriter;

@@ -5,7 +5,7 @@ import entities.MonthlyStats;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Producer {
+public final class Producer {
   private int id;
   private String energyType;
   private int maxDistributors;
@@ -32,21 +32,37 @@ public class Producer {
     }
   }
 
-  public void deleteDistributor(int id) {
+  /**
+   * trigger for remove distributor
+   *
+   */
+  public void deleteDistributor(int idX) {
     actualDistributors--;
-    distributorsList.remove(Integer.valueOf(id));
+    distributorsList.remove(Integer.valueOf(idX));
   }
 
-  public void addDistributor(int id) {
+  /**
+   * trigger for add distributor
+   *
+   */
+  public void addDistributor(int idX) {
     actualDistributors++;
-    distributorsList.add(id);
+    distributorsList.add(idX);
   }
 
+  /**
+   * make monthly stats for distributors
+   *
+   */
   public void computeMonthlyStats() {
     Collections.sort(distributorsList);
     monthlyStats.add(new MonthlyStats(monthlyStats.size() + 1, new ArrayList<>(distributorsList)));
   }
 
+  /**
+   * update energyPerDistributor with new value
+   *
+   */
   public void updatesCosts(final int energyPerDistributorX) {
     this.energyPerDistributor = energyPerDistributorX;
   }

@@ -2,7 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 
-public class MonthlyStats {
+public final class MonthlyStats {
   private final int month;
   private final ArrayList<Integer> distributorsIds;
 
