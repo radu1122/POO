@@ -1,6 +1,16 @@
 Starting audit...
 [ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Consumer.java:95:26: '1.2' is a magic number. [MagicNumber]
-[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:220:61: '10' is a magic number. [MagicNumber]
-[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:222:51: '0.2' is a magic number. [MagicNumber]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:93:38: Inner assignments should be avoided. [InnerAssignment]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:94:38: Inner assignments should be avoided. [InnerAssignment]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:95:33: Inner assignments should be avoided. [InnerAssignment]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:196:61: '10' is a magic number. [MagicNumber]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\dataset\Distributor.java:198:51: '0.2' is a magic number. [MagicNumber]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\Main.java:20:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategy\GreenStrategy.java:9:3: Class 'GreenStrategy' looks like designed for extension (can be subclassed), but the method 'sortProducers' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'GreenStrategy' final or making the method 'sortProducers' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategy\PriceStrategy.java:9:3: Class 'PriceStrategy' looks like designed for extension (can be subclassed), but the method 'sortProducers' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'PriceStrategy' final or making the method 'sortProducers' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategy\QuantityStrategy.java:8:50: '{' is not preceded with whitespace. [WhitespaceAround]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategy\QuantityStrategy.java:9:3: Class 'QuantityStrategy' looks like designed for extension (can be subclassed), but the method 'sortProducers' does not have javadoc that explains how to do that safely. If class is not designed for extension consider making the class 'QuantityStrategy' final or making the method 'sortProducers' static/final/abstract/empty, or adding allowed annotation for the method. [DesignForExtension]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategy\Strategy.java:8:5: Missing a Javadoc comment. [MissingJavadocMethod]
+[ERROR] D:\Facultate\POO\Teme\POO\tema3\.\src\strategy\Strategy.java:8:5: Redundant 'public' modifier. [RedundantModifier]
 Audit done.
-Checkstyle ends with 3 errors.
+Checkstyle ends with 13 errors.

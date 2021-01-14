@@ -1,5 +1,4 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dataset.Consumer;
 import dataset.Consumers;
 import dataset.Distributors;
 import dataset.Entity;
@@ -20,9 +19,6 @@ import java.nio.charset.StandardCharsets;
 
 public final class Main {
 
-    private Main() {
-    }
-
     /**
      * MAIN
      *
@@ -42,7 +38,7 @@ public final class Main {
         // add initial consumers to the dataSet consumers
         for (ConsumerInput consumer : inputData.getInitialData().getConsumers()) {
             Entity entity = EntityFactory.getEntity("CONSUMER");
-            consumers.addConsumer((Consumer) entity.
+            consumers.addConsumer(entity.
                     populateEntity(consumer.getId(), consumer.getInitialBudget(),
                     consumer.getMonthlyIncome()));
         }
@@ -85,7 +81,7 @@ public final class Main {
             // add new consumers
             for (ConsumerInput newConsumer : currentRound.getNewConsumers()) {
                 Entity entity = EntityFactory.getEntity("CONSUMER");
-                consumers.addConsumer((Consumer) entity.populateEntity(newConsumer.getId(),
+                consumers.addConsumer(entity.populateEntity(newConsumer.getId(),
                         newConsumer.getInitialBudget(),
                         newConsumer.getMonthlyIncome()));
             }
@@ -99,7 +95,6 @@ public final class Main {
             // update energyPerDistributor on producers
             for (ProducerChange producer : currentRound.getProducerChanges()) {
                 producers.updateCosts(producer.getId(), producer.getEnergyPerDistributor());
-
             }
 
             distributors.computePrices();
@@ -107,7 +102,6 @@ public final class Main {
             if (!distributors.getHasDistributors()) {
                 break;
             }
-
 
             consumers.checkContracts();
 
@@ -123,17 +117,9 @@ public final class Main {
 
             producers.computeMonthlyStats();
 
-
-//            System.out.println("{\"consumers\":" + consumers + ","
-//                    + "\"distributors\":" + distributors + ","
-//                    + "\"energyProducers\":" + producers + "}");
         }
 
         distributors.prepareExport();
-
-        System.out.println("{\"consumers\":" + consumers + ","
-                + "\"distributors\":" + distributors + ","
-                + "\"energyProducers\":" + producers + "}");
 
         PrintWriter writer = new PrintWriter(outputFile, StandardCharsets.UTF_8);
         writer.println("{\"consumers\":" + consumers + ","

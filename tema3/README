@@ -1,7 +1,47 @@
 Copyright Radu-Andrei Dumitrescu 322CA 2020
 
-Time spent on homework: in 5 days -> 15 hours
+Time spent on homework: in 3 days -> 4 hours
 
+-------------------------------------------------------- Step 2 --------------------------------------------------------
+
+The main class can be opened with 2 arguments:
+    - input file path -> json
+    - output file path -> json
+
+I used in the simulation 3 datasets;
+    - Distributors
+        - this class triggers all the functional analysis for every distributor
+        - the "dataset" is represented by an ArrayList
+        - this is a singleton
+        - add distributor to the dataset
+        - change distributor data
+    - Consumers
+        - this class triggers all the tasks that a consumer does
+        - the "dataset" is represented by an ArrayList
+        - this is also a singleton
+        - add consumer to the dataset
+    - Producers
+        - this class triggers all the tasks that a producer does
+        - add producers to the dataset
+        - update producer cost
+
+I used strategy pattern to work easier on the function that selects the producers for a distributor based on its strategy
+
+                  Strategy Interface
+                          |
+       ________________________________________
+      |                   |                    |
+      |                   |                    |
+GreenStrategy       PriceStrategy       QuantityStrategy
+
+
+I chose not to use the deprecated Observer API and I've implemented my own flow from scratch.
+
+Problems encountered:
+    - some of the tests where wrong in the beginning
+    - there were one or two edge cases where I needed additional information
+
+-------------------------------------------------------- Step 1 --------------------------------------------------------
 
 The main class can be opened with 2 arguments: 
     - input file path -> json
@@ -10,13 +50,13 @@ The main class can be opened with 2 arguments:
 I used in the simulation 2 datasets;
     - Distributors
         - this class triggers all the functional analysis for every distributor
-        - the "dataset" is reprezented by an ArrayList
+        - the "dataset" is represented by an ArrayList
         - this is a singleton
         - add distributor to the dataset
         - change distributor data
     - Consumers
         - this class triggers all the tasks that a consumer does
-        - the "dataset" is reprezented by an ArrayList
+        - the "dataset" is represented by an ArrayList
         - this is also a singleton
         - add consumer to the dataset
 
@@ -31,7 +71,7 @@ Entities:
         - trigger bankrupt actions
         - trigger consumer bankrupt actions
         - here we also have the contracts with the consumers
-        - compute final coontracts form for export
+        - compute final contracts form for export
     Consumer
         - this is an extend of the Entity Class
         - make contract with a distributor
@@ -45,4 +85,4 @@ probably will help me a lot in the next step of the project where I will probabl
 
 Problems encountered:
     - some of the tests where wrong in the beginning
-    - there were one or two edge cases where I needed aditional informations
+    - there were one or two edge cases where I needed additional information

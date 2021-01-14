@@ -1,7 +1,11 @@
 package dataset;
 
+import strategy.GreenStrategy;
+import strategy.PriceStrategy;
+import strategy.QuantityStrategy;
+import strategy.Strategy;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -84,43 +88,15 @@ public final class Distributor extends Entity {
         this.clearProducers();
         this.flag = false;
         ArrayList<Producer> producers = new ArrayList<>(Producers.getInstance().getProducers());
-        Comparator<Producer> comparatorProducers = switch (producerStrategy) {
-            case "GREEN" -> (Producer o1, Producer o2) -> {
-                if (o1.getGreenEnergy() == o2.getGreenEnergy()) {
-                    if (o1.getPriceKW() == o2.getPriceKW()) {
-                        if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
-                            return o1.getId() - o2.getId();
-                        } else {
-                            return o2.getEnergyPerDistributor() - o1.getEnergyPerDistributor();
-                        }
-                    } else {
-                        return Double.compare(o1.getPriceKW(), o2.getPriceKW());
-                    }
-                } else {
-                    return o1.getGreenEnergy() - o2.getGreenEnergy();
-                }
-            };
-            case "PRICE" -> (Producer o1, Producer o2) -> {
-                if (o1.getPriceKW() == o2.getPriceKW()) {
-                    if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
-                        return o1.getId() - o2.getId();
-                    } else {
-                        return o2.getEnergyPerDistributor() - o1.getEnergyPerDistributor();
-                    }
-                } else {
-                    return Double.compare(o1.getPriceKW(), o2.getPriceKW());
-                }
-            };
-            default -> (Producer o1, Producer o2) ->  {
-                if (o1.getEnergyPerDistributor() == o2.getEnergyPerDistributor()) {
-                    return o1.getId() - o2.getId();
-                } else {
-                    return o2.getEnergyPerDistributor() - o1.getEnergyPerDistributor();
-                }
-            };
-        };
+        Strategy strategy;
+        switch (producerStrategy) {
+            case "GREEN" -> strategy = new GreenStrategy();
+            case "PRICE" -> strategy = new PriceStrategy();
+            default -> strategy = new QuantityStrategy();
+        }
 
-        producers.sort(comparatorProducers);
+        producers = strategy.sortProducers(producers);
+
         int remainingEnergyNeeded = energyNeededKW;
         for (Producer producer : producers) {
             if (producer.getMaxDistributors() != producer.getActualDistributors()) {
